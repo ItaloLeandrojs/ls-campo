@@ -23,6 +23,7 @@ try {
   confere(page.url().includes("#/equipe/escolher"), "sem equipe escolhida, pergunta qual é");
   await page.getByRole("button", { name: /Aroeira/ }).click();
   await page.waitForURL(/cracha=aroeira/);
+  await page.getByRole("button", { name: /Entrar/ }).waitFor();
   confere(await page.getByRole("button", { name: /Entrar/ }).isVisible(), "primeira vez da equipe mostra o crachá com Entrar");
   await page.getByRole("button", { name: /Entrar/ }).click();
   await page.waitForURL(/#\/equipe$/);
