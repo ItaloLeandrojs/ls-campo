@@ -1,0 +1,57 @@
+/* Listas, formulários e fichas em página */
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.filtros select { min-height: 40px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); padding: 0 10px; }
+.busca { flex: 1 1 260px; display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); color: var(--faint); }
+.busca:focus-within { outline: 2px solid var(--accent); outline-offset: 0; }
+.busca input { flex: 1; border: 0; background: none; min-height: 38px; outline: none; color: var(--text); }
+
+.tabela { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); overflow: hidden; }
+.tabela-cab, .tabela-linha { display: grid; grid-template-columns: 1.1fr 2fr .9fr 1.2fr .6fr; gap: 12px; align-items: center; padding: 10px 16px; }
+.tabela-clientes .tabela-cab, .tabela-clientes .tabela-linha { grid-template-columns: 2fr 1.4fr .6fr .8fr; }
+.tabela-cab { font-size: 12.5px; font-weight: 600; color: var(--faint); background: var(--surface-2); }
+.tabela-linha { text-decoration: none; border-top: 1px solid var(--line); font-size: 14px; transition: background-color 120ms ease; }
+.tabela-linha:hover { background: var(--surface-2); }
+.tabela-linha small { display: block; color: var(--faint); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tabela-linha b { font-weight: 600; }
+.t-servico { display: flex; gap: 8px; align-items: center; color: var(--muted); }
+.t-servico b { color: var(--text); }
+.t-servico em { font-style: normal; }
+.t-cliente, .t-agenda { min-width: 0; }
+.t-prazo.atrasado { color: var(--e-reagendar); font-weight: 600; }
+.mais { margin: 16px auto 0; display: flex; }
+@media (max-width: 860px) {
+  .tabela-cab { display: none; }
+  .tabela-linha, .tabela-clientes .tabela-linha { grid-template-columns: 1fr auto; grid-template-areas: "a c" "b b" "d e"; row-gap: 6px; padding: 12px 14px; }
+  .tabela-linha > :nth-child(1) { grid-area: a; } .tabela-linha > :nth-child(2) { grid-area: b; }
+  .tabela-linha > :nth-child(3) { grid-area: c; } .tabela-linha > :nth-child(4) { grid-area: d; } .tabela-linha > :nth-child(5) { grid-area: e; }
+}
+
+.form-tela { max-width: 760px; }
+.form-tela.larga { max-width: 1100px; }
+.form { display: grid; gap: 16px; padding: 20px; }
+.form-linha { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.form-acoes { display: flex; justify-content: flex-end; gap: 10px; }
+@media (max-width: 640px) { .form-linha { grid-template-columns: 1fr; } .form { padding: 16px; } }
+.aviso-ok { margin: 0 0 12px; padding: 10px 14px; border-radius: 10px; background: var(--e-concluido-bg); color: var(--e-concluido); font-size: 14.5px; }
+.ficha-pagina { padding: 18px 2px; }
+
+.numeros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.numeros .cartao { padding: 14px 16px; display: grid; gap: 2px; }
+.numeros span { font-size: 13px; color: var(--faint); }
+.numeros b { font-size: 20px; }
+.numeros small { font-size: 13px; color: var(--muted); }
+@media (max-width: 640px) { .numeros { grid-template-columns: 1fr; } }
+.sec-titulo { font-size: 18px; margin: 8px 0 12px; }
+.cards-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.cards-grade .card-sv { cursor: pointer; }
+
+.equipes-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.equipe-cartao { padding: 16px; display: grid; gap: 12px; }
+.equipe-cartao header b { display: block; font-size: 19px; }
+.equipe-cartao header span { color: var(--faint); font-size: 14px; }
+.esp-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.esp-lista li { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; padding: 4px 10px; border-radius: var(--r-pill); background: var(--surface-2); }
+.equipe-nums { margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.equipe-ocup > span { font-size: 12px; color: var(--faint); }
+.equipe-nums dt { font-size: 12px; color: var(--faint); }
+.equipe-nums dd { margin: 0; font-size: 18px; font-weight: 650; }

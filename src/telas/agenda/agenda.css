@@ -70,9 +70,6 @@
 .grade-equipe b { font-size: 15px; }
 .grade-lider { font-size: 12.5px; color: var(--faint); }
 .grade-esp { display: flex; gap: 6px; color: var(--muted); }
-.ocupacao { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12.5px; color: var(--muted); }
-.ocupacao-barra { flex: 1; height: 6px; border-radius: 3px; overflow: hidden; background: var(--surface-3); }
-.ocupacao-barra i { display: block; height: 100%; background: var(--accent); transform-origin: left; transition: transform 320ms var(--ease-out); }
 .grade-celula { position: relative; display: grid; grid-template-rows: 1fr 1fr; gap: 4px; padding: 4px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 132px; }
 .grade-celula.hoje { background: var(--accent-soft); }
 .vaga { position: static; min-height: 58px; border-radius: 8px; border: 1px dashed transparent; transition: background-color 120ms ease, border-color 120ms ease; }
