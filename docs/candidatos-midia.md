@@ -1,14 +1,17 @@
 # Mídia para aprovar
 
-A apresentação usa material do próprio sistema e um vídeo livre do Pexels. Os itens abaixo são trocas opcionais que dependem da aprovação do Italo (fonte gratuita, licença livre, sem conta paga).
+A apresentação usa material do próprio sistema e um vídeo gerado com IA. Os itens abaixo são trocas opcionais que dependem da aprovação do Italo.
 
 ## 1. Cena presa na rolagem (escolhida)
 
-Close real de uma pistola airless pintando a parede: Pexels, vídeo 6474072 (https://www.pexels.com/video/6474072/), licença do Pexels, cor natural.
+Vídeo de 23,5 s gerado no Google Flow em 3 clipes de 8 s, emendados com ffmpeg:
+1. Câmera anda até a parede de concreto (Veo 3.1 Fast, só texto).
+2. Pistola airless pinta faixas terracota (Omni 1.1 Flash, com a imagem inicial e uma foto de pistola airless como referência; o Veo trocava a airless por pistola de caneca).
+3. A pintura termina e a câmera recua até a sala pronta (Omni 1.1 Flash com quadro de início e de fim).
 
-Quadros em `public/seq/parede` (150, 1600 px) e `public/seq/parede-celular` (150, recorte vertical de 720 px centrado na pistola). Componente: `src/landing/CenaParede.jsx`.
+Ajustes na emenda 1: zoom gradual de 1,34x nos últimos 2 s do clipe 1 para casar o enquadramento, e fusão de 0,5 s.
 
-Para trocar por outro vídeo: `node ~/.claude/skills/ls-motion/scripts/extrair-quadros.mjs video.mp4 public/seq/parede --quadros 150 --largura 1600 --celular 720` (o recorte vertical do celular foi feito à mão com ffmpeg: crop=1215:2160:1000:0) e conferir o poster em `CenaParede.jsx`.
+Quadros em `public/seq/parede` (180, 1280 px) e `public/seq/parede-celular` (180, recorte 576x720 que acompanha a ação). Componente: `src/landing/CenaParede.jsx`.
 
 ## 2. Antes e depois (hoje: tela de retorno com checklist pendente × pronto)
 

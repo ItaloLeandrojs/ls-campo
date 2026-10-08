@@ -1,5 +1,5 @@
 // Cena presa na rolagem: a pistola airless pinta a parede e três frases contam o fluxo.
-// Vídeo real do Pexels (licença livre), convertido em quadros: public/seq/parede.
+// Vídeo gerado com IA no Google Flow (3 clipes emendados), convertido em quadros: public/seq/parede.
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -40,8 +40,8 @@ function Frases() {
 export default function CenaParede({ base }) {
   return (
     <ScrollSequence
-      pasta={`${base}seq/parede`} pastaCelular={`${base}seq/parede-celular`} quadros={150} rolagem={2.5} ajuste="cover" topo={64}
-      poster={`${base}seq/parede/0001.webp`} alt="Pistola de pintura airless aplicando tinta numa parede, em close" className="cena"
+      pasta={`${base}seq/parede`} pastaCelular={`${base}seq/parede-celular`} quadros={180} rolagem={2.5} ajuste="cover" topo={64}
+      poster={`${base}seq/parede/0100.webp`} alt="Parede de concreto sendo pintada de terracota com pistola airless, até a sala ficar pronta" className="cena"
     >
       <Frases />
     </ScrollSequence>

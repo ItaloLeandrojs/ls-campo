@@ -11,9 +11,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 Texto completo: https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md
 
-## Vídeo da cena da parede (Pexels)
+## Vídeo da cena da parede (gerado com IA)
 
-Quadros em `public/seq/parede` e `public/seq/parede-celular`, tirados do vídeo 6474072 do Pexels (https://www.pexels.com/video/6474072/). Uso livre pela licença do Pexels (https://www.pexels.com/license/).
+Quadros em `public/seq/parede` e `public/seq/parede-celular`, tirados de um vídeo gerado com IA no Google Flow (modelos Veo 3.1 e Omni 1.1). Pessoas, sala e pintura são fictícias. A pistola airless foi desenhada a partir de um quadro do vídeo 6474072 do Pexels (https://www.pexels.com/video/6474072/), usado como referência pela licença do Pexels (https://www.pexels.com/license/).
 
 ## Fontes
 
