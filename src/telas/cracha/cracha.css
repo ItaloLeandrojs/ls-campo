@@ -1,0 +1,31 @@
+/* Tela do crachá da equipe */
+.tela-cracha { min-height: 100dvh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 24px; padding: 24px; max-width: 1100px; margin: 0 auto; }
+.tela-cracha-texto h1 { margin: 0; font-size: clamp(30px, 5vw, 44px); letter-spacing: -.02em; }
+.tela-cracha-texto p { margin: 10px 0 24px; color: var(--muted); font-size: 17px; }
+.cracha-palco { position: relative; height: min(72dvh, 640px); display: grid; place-items: center; }
+.cracha-palco .lanyard-wrapper { height: 100%; }
+.cracha-palco.carregando { opacity: .6; }
+@media (max-width: 760px) {
+  .tela-cracha { grid-template-columns: 1fr; padding: 16px; align-content: start; }
+  .tela-cracha-texto { order: 2; text-align: center; }
+  .tela-cracha-texto .btn { width: 100%; }
+  .cracha-palco { height: 56dvh; }
+}
+
+/* Crachá parado (HTML) */
+.cracha-parado { display: grid; justify-items: center; }
+.cracha-presilha { width: 16px; height: 64px; background: linear-gradient(var(--accent), var(--accent)); border-radius: 4px 4px 0 0; }
+.cracha-cartao { width: 260px; border-radius: 16px; overflow: hidden; background: #F7F8FA; color: #14161B; box-shadow: 0 18px 40px rgba(17, 24, 39, .22); display: grid; }
+.cracha-faixa { background: #2F62D6; color: #fff; padding: 22px 20px 18px; display: grid; }
+.cracha-faixa b { font-size: 16px; letter-spacing: .08em; }
+.cracha-faixa span { font-size: 13px; opacity: .9; }
+.cracha-corpo { padding: 22px 20px 10px; display: grid; gap: 4px; }
+.cracha-corpo b { font-size: 32px; letter-spacing: -.02em; }
+.cracha-corpo span { color: #4F5561; }
+.cracha-corpo ul { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.cracha-corpo li { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: #E6EDFB; color: #2450B8; font-weight: 600; }
+.cracha-cartao small { padding: 14px 20px 18px; font-size: 11px; color: #6B717D; }
+@media (prefers-reduced-motion: no-preference) {
+  .cracha-parado { animation: balanca 1.6s var(--ease-in-out) both; transform-origin: top center; }
+  @keyframes balanca { 0% { transform: rotate(-5deg); } 40% { transform: rotate(3deg); } 70% { transform: rotate(-1deg); } 100% { transform: rotate(0); } }
+}
