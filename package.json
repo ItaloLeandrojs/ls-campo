@@ -1,0 +1,30 @@
+{
+  "name": "ls-campo",
+  "private": true,
+  "type": "module",
+  "description": "LS Campo: planejamento de equipes de manutenção predial (demonstração com dados fictícios).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "termos": "node scripts/termos.mjs",
+    "publicar": "bash scripts/publicar.sh"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.0.1",
+    "@dnd-kit/core": "^6.3.1",
+    "@phosphor-icons/react": "^2.1.10",
+    "astro": "^7.3.7",
+    "gsap": "^3.15.0",
+    "idb-keyval": "^6.3.0",
+    "motion": "^14.0.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router": "^8.4.0",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.3"
+  }
+}

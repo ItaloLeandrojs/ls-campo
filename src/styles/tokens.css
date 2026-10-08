@@ -1,0 +1,53 @@
+/* LS Campo: tokens. App claro por padrão (data-tema="escuro" no <html> troca); apresentação sempre escura (.tema-escuro). */
+@font-face { font-family: "Roboto Flex"; src: url("../assets/fonts/roboto-flex-latin-wght-normal.woff2") format("woff2"); font-weight: 100 1000; font-display: swap; }
+@font-face { font-family: "Roboto Flex"; src: url("../assets/fonts/roboto-flex-latin-ext-wght-normal.woff2") format("woff2"); font-weight: 100 1000; font-display: swap; unicode-range: U+0100-024F, U+1E00-1EFF; }
+@font-face { font-family: "Roboto Mono"; src: url("../assets/fonts/roboto-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 700; font-display: swap; }
+
+:root {
+  --bg: #F6F7F9; --surface: #FFFFFF; --surface-2: #EEF0F4; --surface-3: #E3E6EC;
+  --line: rgba(17, 24, 39, .10); --line-2: rgba(17, 24, 39, .18);
+  --text: #14161B; --muted: #4F5561; --faint: #6B717D;
+  --accent: #2F62D6; --accent-ink: #FFFFFF; --accent-soft: rgba(47, 98, 214, .10);
+  --sombra: 0 1px 2px rgba(17, 24, 39, .06), 0 8px 24px rgba(17, 24, 39, .06);
+  /* etapas: cor do texto / fundo do selo */
+  --e-novo: #5B616D; --e-novo-bg: #ECEEF2;
+  --e-agendado: #2450B8; --e-agendado-bg: #E6EDFB;
+  --e-execucao: #9A4A06; --e-execucao-bg: #FCEFDD;
+  --e-concluido: #13703A; --e-concluido-bg: #E3F3E8;
+  --e-reagendar: #A91D1D; --e-reagendar-bg: #FBE7E7;
+  --aviso: #8A5A00; --aviso-bg: #FFF4D6;
+  --r-card: 12px; --r-pill: 999px;
+  /* movimento (emil-design-eng) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --fonte: "Roboto Flex", "Segoe UI", system-ui, sans-serif;
+  --mono: "Roboto Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+:root[data-tema="escuro"], .tema-escuro {
+  --bg: #0B0A0F; --surface: #13131A; --surface-2: #1B1B24; --surface-3: #252532;
+  --line: rgba(241, 241, 237, .10); --line-2: rgba(241, 241, 237, .18);
+  --text: #F1F1ED; --muted: #B5B5AE; --faint: #8E8E87;
+  --accent: #5B8CF0; --accent-ink: #0B0A0F; --accent-soft: rgba(91, 140, 240, .14);
+  --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px rgba(0, 0, 0, .35);
+  --e-novo: #B3B8C2; --e-novo-bg: #262833;
+  --e-agendado: #9DB9F5; --e-agendado-bg: #1B2646;
+  --e-execucao: #F3B868; --e-execucao-bg: #382812;
+  --e-concluido: #7BD6A2; --e-concluido-bg: #132E1E;
+  --e-reagendar: #F49A9A; --e-reagendar-bg: #3A191B;
+  --aviso: #F3CC6B; --aviso-bg: #362B10;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--fonte); font-size: 16px; line-height: 1.5; }
+img, video, canvas, svg { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }

@@ -1,0 +1,28 @@
+---
+import "../styles/tokens.css";
+import { INDEXAR } from "../config.js";
+const { titulo = "LS Campo", descricao = "Planejamento de equipes de manutenção predial, do pedido ao retorno. Demonstração com dados fictícios.", classe = "" } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{titulo}</title>
+  <meta name="description" content={descricao}>
+  {!INDEXAR && <meta name="robots" content="noindex">}
+  <link rel="canonical" href={url}>
+  <link rel="icon" href={base + "favicon.svg"} type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content={titulo}>
+  <meta property="og:description" content={descricao}>
+  <meta property="og:url" content={url}>
+  <slot name="head" />
+</head>
+<body class={classe}>
+  <slot />
+</body>
+</html>

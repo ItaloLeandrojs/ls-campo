@@ -1,0 +1,10 @@
+---
+import Base from "../../layouts/Base.astro";
+import App from "../../app/App.jsx";
+---
+<Base titulo="LS Campo · Demonstração">
+  <script is:inline>
+    try { const t = localStorage.getItem("ls-campo:tema"); if (t === "escuro") document.documentElement.dataset.tema = "escuro"; } catch {}
+  </script>
+  <App client:only="react" />
+</Base>
