@@ -24,6 +24,7 @@ export default function ScrollSequence({
   extensao = 'webp',
   rolagem = 2.5, // quantas alturas de tela a sequência dura
   ajuste = 'cover', // 'cover' preenche a tela; 'contain' mostra o quadro inteiro
+  ajusteCelular, // encaixe no celular (padrão: o mesmo de ajuste). 'contain' + fundo da cor do vídeo evita cortar a cena
   poster,
   topo = 0, // altura de uma barra fixa no topo: a cena prende logo abaixo dela
   alt = '',
@@ -33,10 +34,12 @@ export default function ScrollSequence({
   const secao = useRef(null);
   const canvas = useRef(null);
   const [reduz, setReduz] = useState(false);
+  const [aj, setAj] = useState(ajuste); // encaixe em uso (troca para o do celular depois de montar)
 
   useEffect(() => {
     setReduz(matchMedia('(prefers-reduced-motion: reduce)').matches);
-  }, []);
+    if (ajusteCelular && window.innerWidth <= larguraCelular) setAj(ajusteCelular);
+  }, [ajusteCelular, larguraCelular]);
 
   useEffect(() => {
     if (reduz) return;
@@ -49,6 +52,9 @@ export default function ScrollSequence({
     const imgs = new Array(quadros);
     const estado = { f: 0 };
     let ultimo = -1;
+    // Com 'contain' sobra borda: pinta com a cor de fundo da seção (e cobre o poster que fica por baixo).
+    const fundo = getComputedStyle(el).backgroundColor;
+    const temFundo = fundo && fundo !== 'transparent' && !/rgba\(.*,\s*0\)$/.test(fundo);
 
     const pronto = (img) => img && img.complete && img.naturalWidth > 0;
     const desenhar = (alvo) => {
@@ -62,10 +68,10 @@ export default function ScrollSequence({
       const w = Math.round(cv.clientWidth * dpr);
       const h = Math.round(cv.clientHeight * dpr);
       if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
-      const s = (ajuste === 'contain' ? Math.min : Math.max)(w / img.naturalWidth, h / img.naturalHeight);
+      const s = (aj === 'contain' ? Math.min : Math.max)(w / img.naturalWidth, h / img.naturalHeight);
       const dw = img.naturalWidth * s;
       const dh = img.naturalHeight * s;
-      ctx.clearRect(0, 0, w, h);
+      if (temFundo) { ctx.fillStyle = fundo; ctx.fillRect(0, 0, w, h); } else ctx.clearRect(0, 0, w, h);
       ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
       ultimo = j; // o quadro que foi de fato desenhado (pode ser um vizinho enquanto o certo carrega)
     };
@@ -97,16 +103,16 @@ export default function ScrollSequence({
       tween.kill();
       imgs.forEach((img) => { if (img) img.onload = null; });
     };
-  }, [reduz, pasta, pastaCelular, quadros, digitos, extensao, rolagem, ajuste, larguraCelular, topo]);
+  }, [reduz, pasta, pastaCelular, quadros, digitos, extensao, rolagem, aj, larguraCelular, topo]);
 
   return (
     <section
       ref={secao}
       className={`seq ${className}`.trim()}
-      style={{ position: 'relative', height: topo ? `calc(100dvh - ${topo}px)` : '100dvh', overflow: 'hidden', background: poster ? `center / ${ajuste} no-repeat url(${poster})` : undefined }}
+      style={{ position: 'relative', height: topo ? `calc(100dvh - ${topo}px)` : '100dvh', overflow: 'hidden', ...(poster ? { backgroundImage: `url(${poster})`, backgroundPosition: 'center', backgroundSize: aj, backgroundRepeat: 'no-repeat' } : {}) }}
     >
       {reduz ? (
-        poster && <img src={poster} alt={alt} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: ajuste, display: 'block' }} />
+        poster && <img src={poster} alt={alt} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: aj, display: 'block' }} />
       ) : (
         <canvas ref={canvas} role="img" aria-label={alt} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }} />
       )}

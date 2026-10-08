@@ -4,14 +4,16 @@ A apresentação usa material do próprio sistema e um vídeo gerado com IA. Os 
 
 ## 1. Cena presa na rolagem (escolhida)
 
-Vídeo de 23,5 s gerado no Google Flow em 3 clipes de 8 s, emendados com ffmpeg:
-1. Câmera anda até a parede de concreto (Veo 3.1 Fast, só texto).
-2. Pistola airless pinta faixas terracota (Omni 1.1 Flash, com a imagem inicial e uma foto de pistola airless como referência; o Veo trocava a airless por pistola de caneca).
-3. A pintura termina e a câmera recua até a sala pronta (Omni 1.1 Flash com quadro de início e de fim).
+"Anatomia de uma parede", no estilo de comercial de produto: estúdio escuro, parede de blocos flutuando, o reboco cobre os blocos e a tinta terracota escorre até a parede ficar pronta.
 
-Ajustes na emenda 1: zoom gradual de 1,34x nos últimos 2 s do clipe 1 para casar o enquadramento, e fusão de 0,5 s.
+Como foi feito no Google Flow:
+1. Imagem de início e de fim no Nano Banana (0 crédito), a de fim gerada a partir da de início para manter o enquadramento.
+2. Vídeo de 8 s no Veo 3.1 Quality, modo Frames com início e fim (100 créditos).
+3. Download em 1080p "Aprimorada" pelo menu Baixar mídia.
 
-Quadros em `public/seq/parede` (180, 1280 px) e `public/seq/parede-celular` (180, recorte 576x720 que acompanha a ação). Componente: `src/landing/CenaParede.jsx`.
+Quadros: 144 em `public/seq/parede` (1600 px, 7,4 MB) e 144 em `public/seq/parede-celular` (576x720, 4,8 MB), com redução leve de grão (hqdn3d) para caber no peso. Componente: `src/landing/CenaParede.jsx`. A seção da cena é a única escura do site.
+
+Tentativa anterior (sala real com pistola airless, 3 clipes) descartada por qualidade: modelos rápidos, 720p e a IA errando mão, ferramenta e tinta.
 
 ## 2. Antes e depois (hoje: tela de retorno com checklist pendente × pronto)
 
