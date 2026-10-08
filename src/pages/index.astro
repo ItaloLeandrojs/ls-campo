@@ -1,13 +1,112 @@
 ---
 import Base from "../layouts/Base.astro";
+import "../styles/landing.css";
+import MiniDemo from "../landing/MiniDemo.jsx";
+import CenaAgenda from "../landing/CenaAgenda.jsx";
+import HoverVideo from "../landing/HoverVideo.jsx";
+import AntesDepois from "../landing/AntesDepois.jsx";
+import PainelEmbarque from "../landing/PainelEmbarque.jsx";
+import { gerarSemente } from "../dados/semente.js";
+import { serieMensalPrazo } from "../dominio/indicadores.js";
+import { hojeISO, diaSemana, somarDias } from "../dominio/datas.js";
+import { LINKEDIN, VITRINE } from "../config.js";
+
 const base = import.meta.env.BASE_URL;
+const app = `${base}app/`;
+// Números do painel, calculados dos mesmos dados de exemplo do app.
+let dia = hojeISO();
+while (diaSemana(dia) === 0) dia = somarDias(dia, 1);
+const dados = gerarSemente(dia);
+const doDia = dados.servicos.filter((s) => s.agendamento?.data === dia).length;
+const [a, m] = dia.split("-").map(Number);
+const t = new Date(a, m - 2, 1);
+const mesAnterior = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}`;
+const prazo = Math.round(serieMensalPrazo(dados.servicos, [mesAnterior])[0].pct ?? 0);
+const frases = ["HOJE NA ARREMATE", `${doDia} SERVIÇOS HOJE`, `${dados.equipes.length} EQUIPES EM CAMPO`, `${prazo}% NO PRAZO`];
 ---
-<Base titulo="LS Campo · Planejamento de equipes de manutenção" classe="tema-escuro">
-  <main style="min-height:100dvh;display:grid;place-items:center;padding:24px">
-    <div>
-      <h1>LS Campo</h1>
-      <p>Página de apresentação em construção.</p>
-      <a href={base + "app/"}>Abrir a demonstração</a>
+<Base titulo="LS Campo · Planejamento de equipes de manutenção" descricao="Agenda por equipe, regras que evitam erro e retorno de campo com foto. Demonstração completa com dados fictícios, por Italo Leandro." classe="tema-escuro landing">
+  <link slot="head" rel="preload" as="image" href={`${base}img/agenda.webp`} />
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="l-nav">
+    <div class="l-wrap">
+      <a class="l-marca" href={base}><img src={`${base}favicon.svg`} alt="" width="30" height="30" />LS Campo</a>
+      <nav aria-label="Links">
+        <a class="l-link" href="https://github.com/ItaloLeandrojs/ls-campo" target="_blank" rel="noopener">Código</a>
+        <a class="l-btn l-btn-primario" href={app}>Abrir a demonstração</a>
+      </nav>
     </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="l-hero">
+      <div class="l-wrap l-hero-grade">
+        <h1 class="l-sobe" style="--i:0">Planejamento de equipes de manutenção, do pedido ao retorno.</h1>
+        <div class="l-hero-texto">
+          <p class="l-sub l-sobe" style="--i:1">Agenda por equipe, regras que evitam erro e retorno de campo com foto. Uma demonstração completa, com dados fictícios.</p>
+          <a class="l-btn l-btn-primario l-btn-grande l-sobe" style="--i:2" href={app}>Abrir a demonstração</a>
+        </div>
+        <div class="l-hero-tela l-sobe" style="--i:2">
+          <img src={`${base}img/agenda.webp`} srcset={`${base}img/agenda-900.webp 900w, ${base}img/agenda.webp 1600w`} sizes="(max-width: 900px) 100vw, 760px" width="1600" height="1000" alt="Agenda do LS Campo: equipes nas linhas, dias da semana nas colunas e serviços distribuídos por turno." fetchpriority="high" />
+          <img class="l-hero-cel" src={`${base}img/celular.webp`} width="520" height="1125" alt="App da equipe no celular mostrando os serviços do dia." loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <section class="l-demo" aria-labelledby="t-demo">
+      <div class="l-wrap l-demo-grade">
+        <div class="l-demo-texto">
+          <h2 id="t-demo">Experimente: arraste um serviço para uma equipe.</h2>
+          <p>São as mesmas regras do sistema. Uma das equipes não faz o serviço, e o sistema explica por quê.</p>
+        </div>
+        <MiniDemo client:visible linkDemo={app} />
+      </div>
+    </section>
+
+    <CenaAgenda client:visible base={base} />
+
+    <section class="l-como" aria-labelledby="t-como">
+      <div class="l-wrap">
+        <h2 id="t-como">Três telas, um fluxo.</h2>
+        <div class="l-como-grade">
+          <HoverVideo client:visible className="l-card l-card-agenda" href={`${app}#/agenda`} poster={`${base}img/agenda-poster.webp`} src={`${base}video/agenda.mp4`} alt="Gravação: serviço sendo arrastado para uma equipe na agenda" proporcao="1280 / 760">
+            <div class="l-card-texto"><b>Agenda</b><span>O planejador arrasta o serviço para a equipe e o turno. O que não cabe, o sistema recusa e explica.</span></div>
+          </HoverVideo>
+          <HoverVideo client:visible className="l-card l-card-equipe" href={`${app}#/equipe/escolher`} poster={`${base}img/equipe-poster.webp`} src={`${base}video/equipe.mp4`} alt="Gravação: líder de equipe marcando o checklist e concluindo o serviço no celular" proporcao="390 / 760">
+            <div class="l-card-texto"><b>Equipe no celular</b><span>O líder inicia, marca o checklist e manda fotos de antes e depois.</span></div>
+          </HoverVideo>
+          <HoverVideo client:visible className="l-card l-card-ind" href={`${app}#/indicadores`} poster={`${base}img/indicadores-poster.webp`} src={`${base}video/indicadores.mp4`} alt="Gravação: painel de indicadores mudando com os filtros" proporcao="1280 / 760">
+            <div class="l-card-texto"><b>Indicadores</b><span>Prazo, ocupação e motivos de reagendamento, calculados da própria agenda.</span></div>
+          </HoverVideo>
+        </div>
+      </div>
+    </section>
+
+    <section class="l-ad" aria-labelledby="t-ad">
+      <div class="l-wrap l-ad-grade">
+        <div>
+          <h2 id="t-ad">Antes e depois do retorno.</h2>
+          <p>Enquanto falta item obrigatório, o botão fica travado e diz o que falta. Com tudo marcado e a foto anexada, o serviço fecha.</p>
+        </div>
+        <AntesDepois client:visible antes={`${base}img/retorno-antes.webp`} depois={`${base}img/retorno-depois.webp`} rotuloAntes="Checklist pendente" rotuloDepois="Pronto para enviar" alt="tela de retorno do serviço no celular" largura={780} altura={1688} />
+      </div>
+    </section>
+
+    <section class="l-painel" aria-labelledby="t-painel">
+      <div class="l-wrap">
+        <h2 id="t-painel" class="sr-only">Números do dia</h2>
+        <PainelEmbarque client:visible frases={frases} />
+        <p class="l-nota">Números calculados dos dados de exemplo da demonstração.</p>
+      </div>
+    </section>
   </main>
+
+  <footer class="l-rodape">
+    <div class="l-wrap">
+      <p>Demonstração com empresa e dados fictícios. Projeto de portfólio de <a href={LINKEDIN} target="_blank" rel="noopener">Italo Leandro</a>.</p>
+      <nav aria-label="Mais projetos">
+        <a href={VITRINE} target="_blank" rel="noopener">Dashboards em Power BI</a>
+        <a href="https://github.com/ItaloLeandrojs/ls-campo" target="_blank" rel="noopener">Código no GitHub</a>
+      </nav>
+    </div>
+  </footer>
 </Base>
