@@ -29,6 +29,7 @@ try {
   const larg = await page.locator(".campo-fotos").first().locator(".mini img").evaluate((img) => img.naturalWidth);
   confere(larg === 1280, `foto de 3000 px reduzida para 1280 px (${larg})`);
 
+  await page.locator(".check-item input").first().waitFor();
   for (const cb of await page.locator(".check-item input").all()) await cb.check();
   confere(await enviar.isEnabled(), "Enviar habilita com o checklist completo");
   await page.locator("#ret-obs").fill("Cliente aprovou o acabamento.");

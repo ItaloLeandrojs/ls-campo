@@ -21,6 +21,7 @@ try {
   await page.goto(URL_BASE + "app/#/equipe/escolher");
   await page.getByRole("button", { name: /Aroeira/ }).click();
   await page.getByRole("button", { name: "Dar retorno" }).first().click();
+  await page.locator(".check-item input").first().waitFor();
   for (const cb of await page.locator(".check-item input").all()) await cb.check();
   await page.getByRole("button", { name: "Enviar retorno" }).click();
   await page.getByText("Concluído", { exact: true }).waitFor();

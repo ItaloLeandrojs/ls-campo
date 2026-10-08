@@ -34,14 +34,14 @@ function CampoFotos({ titulo, ids, setIds }) {
     for (const a of arquivos) {
       try { novos.push(await salvarFoto(await reduzirImagem(a))); } catch (err) { setErro(err.message); }
     }
-    setIds([...ids, ...novos]);
+    setIds((atual) => [...atual, ...novos]);
     setOcupado(false);
   };
   return (
     <div className="campo-fotos">
       <span className="campo-fotos-titulo">{titulo} <small>{ids.length}/{MAX_FOTOS}</small></span>
       <div className="minis">
-        {ids.map((id, i) => <Miniatura key={id} id={id} rotulo={`${titulo} ${i + 1}`} aoRemover={() => { apagarFoto(id); setIds(ids.filter((x) => x !== id)); }} />)}
+        {ids.map((id, i) => <Miniatura key={id} id={id} rotulo={`${titulo} ${i + 1}`} aoRemover={() => { apagarFoto(id); setIds((atual) => atual.filter((x) => x !== id)); }} />)}
         {ids.length < MAX_FOTOS && (
           <label className={`mini mini-add${ocupado ? " ocupado" : ""}`}>
             <Camera size={24} aria-hidden="true" />
@@ -139,7 +139,7 @@ export default function Retorno() {
                 <legend>Checklist de {tipo.nome.toLowerCase()}</legend>
                 {tipo.checklist.map((i) => (
                   <label key={i.id} className="check-item">
-                    <input type="checkbox" checked={!!checklist[i.id]} onChange={(e) => setChecklist({ ...checklist, [i.id]: e.target.checked })} />
+                    <input type="checkbox" checked={!!checklist[i.id]} onChange={(e) => { const v = e.target.checked; setChecklist((c) => ({ ...c, [i.id]: v })); }} />
                     <span>{i.texto}{i.obrigatorio && <small> · obrigatório</small>}</span>
                   </label>
                 ))}
