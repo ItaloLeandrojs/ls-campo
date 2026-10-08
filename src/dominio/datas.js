@@ -54,3 +54,8 @@ export function diasUteisEntre(inicio, fim) {
   for (let d = inicio; d <= fim; d = somarDias(d, 1)) if (diaSemana(d) !== 0) n++;
   return n;
 }
+
+/** Data e hora locais: 'AAAA-MM-DDTHH:MM'. */
+export function agoraLocal(agora = new Date()) {
+  return `${hojeISO(agora)}T${pad(agora.getHours())}:${pad(agora.getMinutes())}`;
+}

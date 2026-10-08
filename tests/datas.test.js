@@ -46,3 +46,8 @@ describe("datas (sempre locais, AAAA-MM-DD)", () => {
     expect(d.getMonth()).toBe(9);
   });
 });
+
+import { agoraLocal } from "../src/dominio/datas.js";
+describe("agoraLocal", () => {
+  it("data e hora locais AAAA-MM-DDTHH:MM", () => expect(agoraLocal(new Date(2026, 9, 7, 9, 5))).toBe("2026-10-07T09:05"));
+});
