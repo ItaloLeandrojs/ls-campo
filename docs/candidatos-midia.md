@@ -4,16 +4,17 @@ A apresentação usa material do próprio sistema e um vídeo gerado com IA. Os 
 
 ## 1. Cena presa na rolagem (escolhida)
 
-"Anatomia de uma parede", no estilo de comercial de produto: estúdio escuro, parede de blocos flutuando, o reboco cobre os blocos e a tinta terracota escorre até a parede ficar pronta.
+"Anatomia de uma parede", no estilo de comercial de produto: estúdio escuro, uma parede de blocos flutuando recebe reboco e depois tinta terracota.
 
-Como foi feito no Google Flow:
-1. Imagem de início e de fim no Nano Banana (0 crédito), a de fim gerada a partir da de início para manter o enquadramento.
-2. Vídeo de 8 s no Veo 3.1 Quality, modo Frames com início e fim (100 créditos).
-3. Download em 1080p "Aprimorada" pelo menu Baixar mídia.
+Como foi feito no Google Flow, em 2 etapas, para a parede não mudar de forma:
+1. Três imagens no Nano Banana (0 crédito): blocos, rebocada e pintada. A segunda nasce da primeira, e a terceira da segunda, para manter a mesma forma.
+2. Etapa 1 (blocos > reboco): Veo 3.1 Quality, modo Frames com início e fim, varredura limpa da esquerda para a direita.
+3. Etapa 2 (reboco > tinta): Veo 3.1 Fast, porque a versão Quality pôs um rolo de pintura flutuando.
+4. Download em "1080p Aprimorada" e emenda das duas etapas com ffmpeg (sem salto, conferido quadro a quadro).
 
-Quadros: 144 em `public/seq/parede` (1600 px, 7,4 MB) e 144 em `public/seq/parede-celular` (576x720, 4,8 MB), com redução leve de grão (hqdn3d) para caber no peso. Componente: `src/landing/CenaParede.jsx`. A seção da cena é a única escura do site.
+Erros da versão anterior, de uma etapa só: a parede tinha duas camadas de blocos e uma sumia no meio, e o modo início e fim do Veo "pulava" para a imagem final nos últimos quadros.
 
-Tentativa anterior (sala real com pistola airless, 3 clipes) descartada por qualidade: modelos rápidos, 720p e a IA errando mão, ferramenta e tinta.
+Quadros: 168 em `public/seq/parede` (1600 px, 7,4 MB) e 168 em `public/seq/parede-celular` (640x720 com as bordas esfumadas, 4,6 MB). Componente: `src/landing/CenaParede.jsx`. A seção da cena é a única escura do site.
 
 ## 2. Antes e depois (hoje: tela de retorno com checklist pendente × pronto)
 

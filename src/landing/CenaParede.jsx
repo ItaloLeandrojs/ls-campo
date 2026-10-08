@@ -1,5 +1,5 @@
 // Cena presa na rolagem: a anatomia de uma parede (bloco, reboco, tinta terracota) e três frases contam o fluxo.
-// Vídeo gerado com IA no Google Flow (Veo 3.1 Quality, 1080p), convertido em quadros: public/seq/parede.
+// Vídeo gerado com IA no Google Flow em 2 etapas (blocos > reboco > tinta), 1080p, convertido em quadros: public/seq/parede.
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -23,7 +23,7 @@ function Frases() {
     if (r) return;
     const secao = ref.current?.closest(".seq");
     if (!secao) return;
-    const st = ScrollTrigger.create({ trigger: secao, start: "top 64px", end: "+=250%", onUpdate: (s) => setFase(Math.min(2, Math.floor(s.progress * 3))) });
+    const st = ScrollTrigger.create({ trigger: secao, start: "top 64px", end: "+=300%", onUpdate: (s) => setFase(Math.min(2, Math.floor(s.progress * 3))) });
     return () => st.kill();
   }, []);
   return (
@@ -40,8 +40,8 @@ function Frases() {
 export default function CenaParede({ base }) {
   return (
     <ScrollSequence
-      pasta={`${base}seq/parede`} pastaCelular={`${base}seq/parede-celular`} quadros={144} rolagem={2.5} ajuste="cover" ajusteCelular="contain" topo={64}
-      poster={`${base}seq/parede/0080.webp`} alt="Parede de blocos de concreto recebendo reboco e depois tinta terracota, em estúdio escuro" className="cena"
+      pasta={`${base}seq/parede`} pastaCelular={`${base}seq/parede-celular`} quadros={168} rolagem={3} ajuste="cover" ajusteCelular="contain" topo={64}
+      poster={`${base}seq/parede/0125.webp`} alt="Parede de blocos de concreto recebendo reboco e depois tinta terracota, em estúdio escuro" className="cena"
     >
       <Frases />
     </ScrollSequence>
