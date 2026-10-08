@@ -1,0 +1,100 @@
+/* Agenda das equipes */
+.topo-acoes { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.nav-semana { display: flex; align-items: center; gap: 6px; }
+.semana-rotulo { font-weight: 600; color: var(--muted); margin-left: 6px; font-variant-numeric: tabular-nums; }
+.agenda-resumo { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 6px; color: var(--muted); font-size: 14.5px; }
+.agenda-resumo b { color: var(--text); font-size: 15px; }
+.agenda-msg { min-height: 0; font-size: 14.5px; border-radius: 10px; transition: opacity 160ms ease; }
+.agenda-msg:empty { opacity: 0; }
+.agenda-msg.ok, .agenda-msg.erro, .agenda-msg.aviso { padding: 10px 14px; margin-bottom: 14px; }
+.agenda-msg.ok { background: var(--e-concluido-bg); color: var(--e-concluido); }
+.agenda-msg.erro { background: var(--e-reagendar-bg); color: var(--e-reagendar); }
+.agenda-msg.aviso { background: var(--aviso-bg); color: var(--aviso); }
+
+.agenda-corpo { display: grid; grid-template-columns: 252px minmax(0, 1fr); gap: 16px; align-items: start; }
+.agenda-corpo.estreita { grid-template-columns: 1fr; }
+
+/* Lista A agendar */
+.a-agendar { position: sticky; top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 12px; max-height: calc(100dvh - 140px); display: flex; flex-direction: column; gap: 10px; transition: border-color 160ms ease, background-color 160ms ease; }
+.a-agendar.sobre { border-color: var(--accent); background: var(--accent-soft); }
+.a-agendar-cab { display: grid; gap: 8px; }
+.a-agendar-cab h2 { margin: 0; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.a-agendar-cab h2 .num { font-size: 13px; padding: 1px 8px; border-radius: var(--r-pill); background: var(--surface-2); color: var(--muted); }
+.a-agendar-cab select { min-height: 36px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--surface); padding: 0 8px; }
+.a-agendar-lista { display: grid; gap: 8px; overflow: auto; padding: 2px; }
+.solte-aqui { margin: 0; font-size: 13.5px; color: var(--accent); font-weight: 600; text-align: center; padding: 8px; border: 1px dashed var(--accent); border-radius: 10px; }
+.vazio-curto { margin: 0; color: var(--faint); font-size: 14px; }
+.agenda-corpo.estreita .a-agendar { position: static; max-height: none; }
+.agenda-corpo.estreita .a-agendar-lista { max-height: 320px; }
+
+/* Card de serviço */
+.card-sv { display: grid; gap: 4px; padding: 10px 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line-2); text-align: left; font-size: 14px; transition: transform 160ms var(--ease-out), border-color 160ms ease, opacity 160ms ease; touch-action: manipulation; }
+.card-sv.arrastavel { cursor: grab; }
+.card-sv.arrastavel:active { cursor: grabbing; }
+@media (hover: hover) and (pointer: fine) { .card-sv:hover { border-color: var(--accent); } }
+.card-sv-topo { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12.5px; }
+.card-sv-cod { font-size: 12px; white-space: nowrap; }
+.card-sv-urg { color: var(--e-reagendar); flex: none; }
+.card-sv-dia { margin-left: auto; font-size: 11.5px; font-weight: 600; color: var(--faint); }
+.card-sv-cliente { font-size: 14px; line-height: 1.25; }
+.card-sv-desc { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+.card-sv-pe { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.card-sv-tipo { font-size: 12.5px; color: var(--faint); }
+.card-sv-prazo { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.card-sv-prazo.atrasado { color: var(--e-reagendar); font-weight: 600; }
+.card-sv.compacto { padding: 6px 8px; gap: 2px; font-size: 12.5px; height: 100%; border-left: 3px solid var(--e-agendado); }
+.card-sv.compacto .card-sv-cliente { font-size: 12.5px; font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-sv.compacto .card-sv-pe { display: none; }
+.card-sv.compacto.etapa-concluido { border-left-color: var(--e-concluido); background: var(--surface-2); }
+.card-sv.compacto.etapa-execucao { border-left-color: var(--e-execucao); }
+.card-sv.compacto.fixo { cursor: pointer; }
+.card-sv.arrastando { opacity: .35; }
+.card-sv.no-ar { box-shadow: 0 12px 28px rgba(17, 24, 39, .22); transform: rotate(-1.5deg); cursor: grabbing; }
+@media (prefers-reduced-motion: no-preference) {
+  .card-sv.treme { animation: treme 300ms var(--ease-out); }
+  @keyframes treme { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+}
+.mola { height: 100%; }
+
+/* Grade */
+.grade-rolagem { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); }
+.grade { display: grid; grid-template-columns: 136px repeat(6, minmax(104px, 1fr)); min-width: 780px; }
+.grade-canto { border-bottom: 1px solid var(--line); }
+.grade-dia { padding: 10px; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); display: flex; gap: 6px; align-items: baseline; font-size: 14px; }
+.grade-dia b { text-transform: capitalize; }
+.grade-dia span { color: var(--faint); font-size: 13px; }
+.grade-dia.hoje { color: var(--accent); }
+.grade-dia.hoje span { color: var(--accent); }
+.grade-dia.passado { color: var(--faint); }
+.grade-equipe { padding: 10px 12px; border-bottom: 1px solid var(--line); display: grid; gap: 3px; align-content: start; }
+.grade-equipe b { font-size: 15px; }
+.grade-lider { font-size: 12.5px; color: var(--faint); }
+.grade-esp { display: flex; gap: 6px; color: var(--muted); }
+.ocupacao { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12.5px; color: var(--muted); }
+.ocupacao-barra { flex: 1; height: 6px; border-radius: 3px; overflow: hidden; background: var(--surface-3); }
+.ocupacao-barra i { display: block; height: 100%; background: var(--accent); transform-origin: left; transition: transform 320ms var(--ease-out); }
+.grade-celula { position: relative; display: grid; grid-template-rows: 1fr 1fr; gap: 4px; padding: 4px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 132px; }
+.grade-celula.hoje { background: var(--accent-soft); }
+.vaga { position: static; min-height: 58px; border-radius: 8px; border: 1px dashed transparent; transition: background-color 120ms ease, border-color 120ms ease; }
+.vaga:empty::before { content: attr(data-turno); display: none; }
+.vaga.passada { background: repeating-linear-gradient(-45deg, transparent 0 6px, var(--surface-2) 6px 7px); }
+.vaga.aceita:empty, .vaga.aceita-aviso:empty { border-color: var(--e-concluido); }
+.vaga.aceita-aviso:empty { border-color: var(--aviso); }
+.vaga.recusa:empty { background: var(--e-reagendar-bg); }
+.vaga.sobre.aceita, .vaga.sobre.aceita-aviso { background: var(--e-concluido-bg); border-style: solid; }
+.vaga.sobre.recusa { border-color: var(--e-reagendar); border-style: solid; }
+.ocupa-dia, .ocupa-dia-mola { position: absolute; inset: 4px; z-index: 1; }
+.ocupa-dia-mola > .card-sv { height: 100%; }
+
+/* Lista por dia (telas estreitas) */
+.lista-dia { display: grid; gap: 12px; }
+.dias-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.chip-dia { flex: none; display: grid; justify-items: center; min-width: 64px; min-height: 52px; padding: 6px 8px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--surface); cursor: pointer; font-size: 13px; }
+.chip-dia b { text-transform: capitalize; }
+.chip-dia.hoje { border-color: var(--accent); }
+.chip-dia.ativo { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.dia-equipe { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 12px; display: grid; gap: 8px; }
+.dia-equipe h3 { margin: 0; font-size: 15px; }
+.dia-equipe h3 span { font-weight: 450; color: var(--faint); font-size: 13px; margin-left: 6px; }
+.dia-item { display: grid; gap: 4px; }
+.dia-turno { font-size: 12px; font-weight: 600; color: var(--faint); }
