@@ -19,7 +19,7 @@ export function Numero({ valor, casas = 0, sufixo = "" }) {
     anterior.current = valor;
     return () => c.stop();
   }, [valor, casas, sufixo, reduz]);
-  return <span ref={ref} className="num">{fmt(valor, casas)}{valor === null || valor === undefined ? "" : sufixo}</span>;
+  return <span ref={ref} className="num-valor">{fmt(valor, casas)}{valor === null || valor === undefined ? "" : sufixo}</span>;
 }
 
 function TabelaOculta({ titulo, dados, unidade }) {
@@ -44,7 +44,7 @@ export function BarrasV({ titulo, dados, max = 100, meta, unidade = "%", chave }
         )}
         {dados.map((d, i) => (
           <div key={d.rotulo} className="graf-v-col" tabIndex={0}>
-            <span className="graf-v-valor num">{fmt(d.valor, d.casas || 0)}{d.valor === null ? "" : unidade}</span>
+            <span className="graf-v-valor num-valor">{fmt(d.valor, d.casas || 0)}{d.valor === null ? "" : unidade}</span>
             <div className="graf-v-trilho">
               <i className={`graf-v-barra${d.fraco ? " fraco" : ""}`} style={{ transform: `scaleY(${Math.max(0, Math.min(1, (d.valor || 0) / max))})`, transitionDelay: reduz ? "0ms" : `${i * 40}ms` }} />
             </div>
@@ -71,7 +71,7 @@ export function BarrasH({ titulo, dados, max, unidade = "", destaque, chave }) {
             <span className="graf-h-trilho">
               <i className="graf-h-barra" style={{ transform: `scaleX(${Math.max(0, Math.min(1, (d.valor || 0) / topo))})`, transitionDelay: reduz ? "0ms" : `${i * 40}ms` }} />
             </span>
-            <span className="graf-h-valor num">{fmt(d.valor, d.casas || 0)}{unidade}</span>
+            <span className="graf-h-valor num-valor">{fmt(d.valor, d.casas || 0)}{unidade}</span>
             {d.dica && <span className="graf-dica" role="tooltip">{d.dica}</span>}
           </li>
         ))}

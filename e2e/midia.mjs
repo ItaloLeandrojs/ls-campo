@@ -1,5 +1,6 @@
-// Gera a mídia da apresentação a partir do próprio app: print da agenda, quadros da cena
-// "agenda se preenchendo" e vídeos curtos (agenda, equipe, indicadores). Uso: node e2e/midia.mjs
+// Gera a mídia da apresentação a partir do próprio app: prints (agenda, celular, antes e depois)
+// e vídeos curtos (agenda, equipe, indicadores). A cena da parede vem de vídeo (public/seq/parede).
+// Uso: node e2e/midia.mjs
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -9,7 +10,7 @@ const SAIDA = "public";
 const TMP = "_midia";
 fs.rmSync(TMP, { recursive: true, force: true });
 fs.mkdirSync(TMP, { recursive: true });
-for (const d of ["img", "video", "seq/agenda"]) fs.mkdirSync(path.join(SAIDA, d), { recursive: true });
+for (const d of ["img", "video"]) fs.mkdirSync(path.join(SAIDA, d), { recursive: true });
 const ff = (...a) => execFileSync("ffmpeg", ["-v", "error", "-y", ...a]);
 const webp = (png, destino, largura) => ff("-i", png, "-vf", `scale=${largura}:-2:flags=lanczos`, "-c:v", "libwebp", "-quality", "82", destino);
 
@@ -47,48 +48,7 @@ try {
     webp(`${TMP}/depois.png`, `${SAIDA}/img/retorno-depois.webp`, 780);
   }
 
-  // 2. Quadros da cena: a semana seguinte se preenchendo, um serviço por vez
-  {
-    const { page } = await pagina(b, { viewport: { width: 1440, height: 820 }, reducedMotion: "reduce" });
-    await page.goto(URL_BASE + "app/#/agenda"); await page.waitForSelector(".grade");
-    await page.getByRole("button", { name: "Tema escuro" }).click();
-    const plano = await page.evaluate(() => {
-      const k = "ls-campo:dados:v1";
-      const v = JSON.parse(localStorage.getItem(k));
-      const seg = "2026-10-12", sab = "2026-10-17";
-      const alvo = v.state.dados.servicos.filter((s) => s.agendamento && s.agendamento.data >= seg && s.agendamento.data <= sab);
-      const guardados = alvo.map((s) => ({ id: s.id, ag: s.agendamento }));
-      guardados.sort((a, b) => a.ag.data.localeCompare(b.ag.data) || a.ag.equipeId.localeCompare(b.ag.equipeId));
-      for (const s of alvo) { s.agendamento = null; s.etapa = "novo"; }
-      localStorage.setItem(k, JSON.stringify(v));
-      return guardados;
-    });
-    const aplicar = (n) => page.evaluate(([plano, n]) => {
-      const k = "ls-campo:dados:v1";
-      const v = JSON.parse(localStorage.getItem(k));
-      const ativos = new Set(plano.slice(0, n).map((p) => p.id));
-      for (const s of v.state.dados.servicos) {
-        const p = plano.find((x) => x.id === s.id);
-        if (!p) continue;
-        if (ativos.has(s.id)) { s.agendamento = p.ag; s.etapa = "agendado"; } else { s.agendamento = null; s.etapa = "novo"; }
-      }
-      localStorage.setItem(k, JSON.stringify(v));
-    }, [plano, n]);
-    for (let n = 0; n <= plano.length; n++) {
-      await aplicar(n);
-      await page.reload(); await page.waitForSelector(".grade");
-      await page.getByRole("button", { name: "Próxima semana" }).click();
-      await page.waitForTimeout(150);
-      const box = await page.locator(".grade-rolagem").boundingBox();
-      await page.screenshot({ path: `${TMP}/f${String(n).padStart(3, "0")}.png`, clip: { x: box.x, y: box.y, width: box.width, height: Math.min(box.height, 760) } });
-    }
-    // vídeo com transição suave entre quadros, depois cortado em 120 quadros (computador e celular)
-    ff("-framerate", "4", "-i", `${TMP}/f%03d.png`, "-vf", "framerate=fps=24:interp_start=0:interp_end=255:scene=100,scale=1600:-2:flags=lanczos,format=yuv420p", "-c:v", "libx264", "-crf", "20", `${TMP}/cena.mp4`);
-    execFileSync("node", [path.resolve(process.env.USERPROFILE, ".claude/skills/ls-motion/scripts/extrair-quadros.mjs"), `${TMP}/cena.mp4`, `${SAIDA}/seq/agenda`, "--quadros", "120", "--largura", "1600", "--celular", "800", "--qualidade", "72"], { stdio: "inherit" });
-    console.log(`cena: ${plano.length} serviços entrando na semana`);
-  }
-
-  // 3. Vídeos curtos (gravados do app)
+  // 2. Vídeos curtos (gravados do app)
   const gravar = async (nome, opts, roteiro) => {
     const ctx = await b.newContext({ ...opts, recordVideo: { dir: `${TMP}/v-${nome}`, size: opts.viewport } });
     await ctx.addInitScript(() => { const f = new Date(2026, 9, 7, 9, 30).getTime(); const O = Date; Date = class extends O { constructor(...a) { super(...(a.length ? a : [f])); } static now() { return f; } }; }); // eslint-disable-line
@@ -134,7 +94,7 @@ try {
   await b.close();
   parar();
 }
-for (const d of ["img", "video", "seq/agenda"]) {
+for (const d of ["img", "video"]) {
   const p = path.join(SAIDA, d);
   const bytes = fs.readdirSync(p).reduce((s, f) => s + fs.statSync(path.join(p, f)).size, 0);
   console.log(`${p}: ${fs.readdirSync(p).length} arquivos, ${(bytes / 1e6).toFixed(2)} MB`);

@@ -1,18 +1,14 @@
 # Mídia para aprovar
 
-A apresentação já funciona com material gerado do próprio sistema. Os itens abaixo são trocas opcionais que dependem da aprovação do Italo (fonte gratuita, licença livre, sem conta paga).
+A apresentação usa material do próprio sistema e um vídeo livre do Pexels. Os itens abaixo são trocas opcionais que dependem da aprovação do Italo (fonte gratuita, licença livre, sem conta paga).
 
-## 1. Cena presa na rolagem (hoje: agenda da semana se preenchendo)
+## 1. Cena presa na rolagem (escolhida)
 
-Ideia original: rolo de pintura cobrindo uma parede, que avança conforme a pessoa rola.
+Close real de uma pistola airless pintando a parede: Pexels, vídeo 6474072 (https://www.pexels.com/video/6474072/), licença do Pexels, cor natural.
 
-Onde procurar (licença livre, sem precisar dar crédito):
-- Pexels: https://www.pexels.com/search/videos/paint%20roller%20wall/
-- Mixkit: https://mixkit.co/free-stock-video/paint/
+Quadros em `public/seq/parede` (150, 1600 px) e `public/seq/parede-celular` (150, recorte quadrado de 820 px). Componente: `src/landing/CenaParede.jsx`.
 
-O que precisa ter: câmera parada, fundo limpo, o rolo cobrindo a parede de um lado ao outro, 4 a 8 segundos, 1080p ou mais.
-
-Como trocar depois de escolher: `node ~/.claude/skills/ls-motion/scripts/extrair-quadros.mjs video.mp4 public/seq/parede --quadros 120 --largura 1600 --celular 720` e apontar `CenaAgenda.jsx` para `seq/parede`.
+Para trocar por outro vídeo: `node ~/.claude/skills/ls-motion/scripts/extrair-quadros.mjs video.mp4 public/seq/parede --quadros 150 --largura 1600 --celular 820` e conferir o poster em `CenaParede.jsx`.
 
 ## 2. Antes e depois (hoje: tela de retorno com checklist pendente × pronto)
 

@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import "../styles/landing.css";
 import MiniDemo from "../landing/MiniDemo.jsx";
-import CenaAgenda from "../landing/CenaAgenda.jsx";
+import CenaParede from "../landing/CenaParede.jsx";
 import HoverVideo from "../landing/HoverVideo.jsx";
 import AntesDepois from "../landing/AntesDepois.jsx";
 import PainelEmbarque from "../landing/PainelEmbarque.jsx";
@@ -24,7 +24,7 @@ const mesAnterior = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "
 const prazo = Math.round(serieMensalPrazo(dados.servicos, [mesAnterior])[0].pct ?? 0);
 const frases = ["HOJE NA ARREMATE", `${doDia} SERVIÇOS HOJE`, `${dados.equipes.length} EQUIPES EM CAMPO`, `${prazo}% NO PRAZO`];
 ---
-<Base titulo="LS Campo · Planejamento de equipes de manutenção" descricao="Agenda por equipe, regras que evitam erro e retorno de campo com foto. Demonstração completa com dados fictícios, por Italo Leandro." classe="tema-escuro landing">
+<Base titulo="LS Campo · Planejamento de equipes de manutenção" descricao="Agenda por equipe, regras que evitam erro e retorno de campo com foto. Demonstração completa com dados fictícios, por Italo Leandro." classe="landing">
   <link slot="head" rel="preload" as="image" href={`${base}img/agenda.webp`} />
   <a class="skip" href="#conteudo">Pular para o conteúdo</a>
   <header class="l-nav">
@@ -58,11 +58,11 @@ const frases = ["HOJE NA ARREMATE", `${doDia} SERVIÇOS HOJE`, `${dados.equipes.
           <h2 id="t-demo">Experimente: arraste um serviço para uma equipe.</h2>
           <p>São as mesmas regras do sistema. Uma das equipes não faz o serviço, e o sistema explica por quê.</p>
         </div>
-        <MiniDemo client:visible linkDemo={app} />
+        <MiniDemo client:visible linkDemo={app} hojeBuild={hojeISO()} />
       </div>
     </section>
 
-    <CenaAgenda client:visible base={base} />
+    <CenaParede client:visible base={base} />
 
     <section class="l-como" aria-labelledby="t-como">
       <div class="l-wrap">

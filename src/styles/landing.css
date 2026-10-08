@@ -1,4 +1,4 @@
-/* Apresentação do LS Campo (sempre escura). Um efeito preso na rolagem; interativos acionados pela pessoa. */
+/* Apresentação do LS Campo (clara, grafite e terracota). Um efeito preso na rolagem; interativos acionados pela pessoa. */
 .landing { overflow-x: clip; }
 .l-wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 @media (max-width: 640px) { .l-wrap { padding: 0 16px; } }
@@ -13,7 +13,7 @@
 .l-btn-primario:hover { filter: brightness(1.08); }
 .l-btn-grande { min-height: 52px; padding: 0 24px; font-size: 17px; }
 
-.l-nav { position: sticky; top: 0; z-index: 30; background: rgba(11, 10, 15, .82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.l-nav { position: sticky; top: 0; z-index: 30; background: rgba(250, 250, 249, .86); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
 .l-nav .l-wrap { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .l-nav nav { display: flex; align-items: center; gap: 18px; }
 .l-marca { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; text-decoration: none; }
@@ -22,13 +22,13 @@
 @media (max-width: 520px) { .l-link { display: none; } }
 
 /* Topo */
-.l-hero { position: relative; padding: 56px 0 72px; overflow: clip; background: radial-gradient(900px 500px at 80% 0%, rgba(47, 98, 214, .22), transparent 70%); }
+.l-hero { position: relative; padding: 56px 0 72px; overflow: clip; background: radial-gradient(900px 500px at 80% 0%, rgba(184, 70, 42, .09), transparent 70%); }
 .l-hero-grade { display: grid; grid-template-columns: 5fr 7fr; column-gap: 48px; row-gap: 36px; align-items: center; }
 .l-hero h1 { grid-column: 1 / -1; margin: 0; font-size: clamp(34px, 4.6vw, 62px); line-height: 1.05; letter-spacing: -.028em; font-weight: 760; max-width: 32ch; }
 .l-sub { margin: 0 0 28px; font-size: 18px; max-width: 40ch; }
 .l-hero-tela { position: relative; }
-.l-hero-tela > img:first-child { border-radius: 14px; border: 1px solid var(--line-2); box-shadow: 0 30px 80px rgba(0, 0, 0, .5); }
-.l-hero-cel { position: absolute; width: 26%; right: -3%; bottom: -12%; border-radius: 22px; border: 6px solid #1B1B24; box-shadow: 0 24px 60px rgba(0, 0, 0, .55); }
+.l-hero-tela > img:first-child { border-radius: 14px; border: 1px solid var(--line-2); box-shadow: 0 30px 70px rgba(24, 24, 27, .14); }
+.l-hero-cel { position: absolute; width: 26%; right: -3%; bottom: -12%; border-radius: 22px; border: 6px solid #18181B; box-shadow: 0 24px 50px rgba(24, 24, 27, .22); }
 @media (max-width: 900px) {
   .l-hero { padding: 32px 0 64px; }
   .l-hero-grade { grid-template-columns: 1fr; row-gap: 24px; }
@@ -53,7 +53,7 @@
 .demo-card b { display: block; font-size: 13.5px; }
 .demo-card small { display: block; color: var(--faint); font-size: 12.5px; line-height: 1.25; }
 .demo-card.fantasma { opacity: .3; }
-.demo-no-ar .demo-card { box-shadow: 0 14px 30px rgba(0, 0, 0, .45); transform: rotate(-2deg); background: var(--surface-3); }
+.demo-no-ar .demo-card { box-shadow: 0 14px 30px rgba(24, 24, 27, .18); transform: rotate(-2deg); background: var(--surface-3); }
 @media (prefers-reduced-motion: no-preference) {
   .demo-card.treme { animation: d-treme 300ms var(--ease-out); }
   @keyframes d-treme { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
@@ -88,7 +88,7 @@
 /* Cena presa na rolagem */
 .cena { background: var(--bg); }
 .cena-frases { position: relative; height: 100%; max-width: 1200px; margin: 0 auto; pointer-events: none; }
-.cena-frase { position: absolute; left: 24px; bottom: 7vh; max-width: 30ch; display: grid; gap: 6px; padding: 18px 20px; border-radius: 14px; background: rgba(11, 10, 15, .86); border: 1px solid var(--line-2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; transform: translateY(12px); transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out); }
+.cena-frase { position: absolute; left: 24px; bottom: 7vh; max-width: 30ch; display: grid; gap: 6px; padding: 18px 20px; border-radius: 14px; background: rgba(255, 255, 255, .9); box-shadow: 0 12px 30px rgba(24, 24, 27, .12); border: 1px solid var(--line-2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; transform: translateY(12px); transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out); }
 .cena-frase.ativa { opacity: 1; transform: none; }
 .cena-frase b { font-size: clamp(22px, 2.6vw, 32px); letter-spacing: -.02em; line-height: 1.15; }
 .cena-frase span { color: var(--muted); font-size: 15.5px; }
@@ -123,10 +123,10 @@
 .l-ad-grade p { margin: 14px 0 0; font-size: 17px; max-width: 42ch; }
 @media (max-width: 800px) { .l-ad-grade { grid-template-columns: 1fr; } .l-ad-grade .ad-fig { max-width: 340px; margin: 0 auto; } }
 .ad-fig { margin: 0; }
-.ad { position: relative; border-radius: 22px; overflow: hidden; border: 6px solid #1B1B24; box-shadow: 0 24px 60px rgba(0, 0, 0, .5); cursor: ew-resize; touch-action: pan-y; user-select: none; }
+.ad { position: relative; border-radius: 22px; overflow: hidden; border: 6px solid #18181B; box-shadow: 0 24px 50px rgba(24, 24, 27, .22); cursor: ew-resize; touch-action: pan-y; user-select: none; }
 .ad img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .ad-linha { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .25); pointer-events: none; }
-.ad-alca { position: absolute; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: #fff; color: #14161B; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0, 0, 0, .35); cursor: ew-resize; }
+.ad-alca { position: absolute; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: #fff; color: #18181B; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(24, 24, 27, .3); cursor: ew-resize; }
 .ad-alca:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .ad-legenda { display: flex; justify-content: space-between; margin-top: 10px; font-size: 13.5px; color: var(--faint); }
 

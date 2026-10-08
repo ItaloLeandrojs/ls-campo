@@ -3,7 +3,7 @@
   align-items: center;
   gap: var(--split-flap-gap, 6px);
   color: var(--split-flap-text-color, #f8fafc);
-  font-family: 'SFMono-Regular', 'Roboto Mono', 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
   font-size: var(--split-flap-font-size, 52px);
   font-weight: 760;
   line-height: 1;

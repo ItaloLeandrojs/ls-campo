@@ -10,3 +10,11 @@ Copyright (c) 2026 David Haz
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, and distribute the Software as part of an application, website, or product, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 Texto completo: https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md
+
+## Vídeo da cena da parede (Pexels)
+
+Quadros em `public/seq/parede` e `public/seq/parede-celular`, tirados do vídeo 6474072 do Pexels (https://www.pexels.com/video/6474072/). Uso livre pela licença do Pexels (https://www.pexels.com/license/).
+
+## Fontes
+
+Schibsted Grotesk e IBM Plex Mono, em `src/assets/fonts`, pela SIL Open Font License 1.1 (https://openfontlicense.org).

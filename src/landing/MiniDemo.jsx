@@ -1,5 +1,5 @@
 // Mini-demo da apresentação: agenda pequena com as regras reais do sistema (podeAgendar).
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DndContext, DragOverlay, MouseSensor, TouchSensor, useDraggable, useDroppable, useSensor, useSensors, pointerWithin } from "@dnd-kit/core";
 import { motion, useReducedMotion } from "motion/react";
 import { PaintRoller, Drop, Lightning, ArrowRight, ArrowCounterClockwise } from "@phosphor-icons/react";
@@ -14,9 +14,9 @@ const EQUIPES = [
 const ICONE = { pintura: PaintRoller, hidraulica: Drop, eletrica: Lightning };
 const NOME = { pintura: "Pintura", hidraulica: "Hidráulica", eletrica: "Elétrica predial" };
 
-function proximosDias(n) {
+function proximosDias(hoje, n) {
   const r = [];
-  for (let d = somarDias(hojeISO(), 1); r.length < n; d = somarDias(d, 1)) if (diaSemana(d) !== 0) r.push(d);
+  for (let d = somarDias(hoje, 1); r.length < n; d = somarDias(d, 1)) if (diaSemana(d) !== 0) r.push(d);
   return r;
 }
 
@@ -42,15 +42,22 @@ function Celula({ equipe, data, ativo, servicos, hoje, children }) {
   return <div ref={setNodeRef} className={`demo-celula${estado}${isOver ? " sobre" : ""}`} aria-label={`${equipe.nome}, ${formatar(data)}`}>{children}</div>;
 }
 
-export default function MiniDemo({ linkDemo }) {
-  const hoje = hojeISO();
-  const dias = useMemo(() => proximosDias(3), []);
-  const inicial = () => [
-    { id: "d1", tipo: "pintura", cliente: "Residencial Bem-te-vi", duracao: "turno", prazo: dias[2], etapa: "novo", agendamento: null },
-    { id: "d2", tipo: "hidraulica", cliente: "Padaria Trigo de Ouro", duracao: "turno", prazo: dias[2], etapa: "novo", agendamento: null },
-    { id: "d3", tipo: "eletrica", cliente: "Clínica Sorriso Pleno", duracao: "turno", prazo: dias[2], etapa: "novo", agendamento: null },
-  ];
-  const [servicos, setServicos] = useState(inicial);
+const inicial = (dias) => [
+  { id: "d1", tipo: "pintura", cliente: "Residencial Bem-te-vi", duracao: "turno", prazo: dias[2], etapa: "novo", agendamento: null },
+  { id: "d2", tipo: "hidraulica", cliente: "Padaria Trigo de Ouro", duracao: "turno", prazo: dias[2], etapa: "novo", agendamento: null },
+  { id: "d3", tipo: "eletrica", cliente: "Clínica Sorriso Pleno", duracao: "turno", prazo: dias[2], etapa: "novo", agendamento: null },
+];
+
+// hojeBuild: a data em que a página foi gerada. A primeira pintura usa essa data (igual ao HTML
+// estático); depois de montar, troca para a data de quem visita.
+export default function MiniDemo({ linkDemo, hojeBuild }) {
+  const [hoje, setHoje] = useState(() => hojeBuild ?? hojeISO());
+  const dias = useMemo(() => proximosDias(hoje, 3), [hoje]);
+  const [servicos, setServicos] = useState(() => inicial(dias));
+  useEffect(() => {
+    const h = hojeISO();
+    if (h !== hoje) { setHoje(h); setServicos(inicial(proximosDias(h, 3))); }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [ativo, setAtivo] = useState(null);
   const [msg, setMsg] = useState({ tipo: "", texto: "Arraste um serviço para a equipe e o dia." });
   const [treme, setTreme] = useState(null);
@@ -86,12 +93,12 @@ export default function MiniDemo({ linkDemo }) {
 
   return (
     <div className="demo">
-      <DndContext sensors={sensores} collisionDetection={pointerWithin} onDragStart={({ active }) => setAtivo(active.id)} onDragCancel={() => setAtivo(null)} onDragEnd={aoSoltar}>
+      <DndContext id="mini-demo" sensors={sensores} collisionDetection={pointerWithin} onDragStart={({ active }) => setAtivo(active.id)} onDragCancel={() => setAtivo(null)} onDragEnd={aoSoltar}>
         <div className="demo-lista" aria-label="Serviços a agendar">
           <span className="demo-rotulo">A agendar</span>
           {pendentes.map((s) => <Arrastavel key={s.id} s={s} treme={treme === s.id} />)}
           {pendentes.length === 0 && (
-            <button type="button" className="demo-recomecar" onClick={() => { setServicos(inicial()); setMsg({ tipo: "", texto: "Arraste um serviço para a equipe e o dia." }); }}>
+            <button type="button" className="demo-recomecar" onClick={() => { setServicos(inicial(dias)); setMsg({ tipo: "", texto: "Arraste um serviço para a equipe e o dia." }); }}>
               <ArrowCounterClockwise size={16} /> De novo
             </button>
           )}

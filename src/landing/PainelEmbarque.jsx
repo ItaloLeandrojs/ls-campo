@@ -13,7 +13,7 @@ export default function PainelEmbarque({ frases }) {
   return (
     <div className="painel-embarque" aria-label={frases.join(". ")} role="img">
       <SplitFlapText words={frases} loop cycleDelay={2600} flipDuration={0.09} stagger={0.035} flipsPerChar={6}
-        charset="ABCDEFGHIJKLMNOPQRSTUVWXYZÇÃÕÉ0123456789%" tileColor="#16161E" textColor="#F1F1ED" tileRadius={6} gap={4}
+        charset="ABCDEFGHIJKLMNOPQRSTUVWXYZÇÃÕÉ0123456789%" tileColor="#18181B" textColor="#FAFAF9" tileRadius={6} gap={4}
         fontSize={tamanho} padTo={18} />
     </div>
   );
