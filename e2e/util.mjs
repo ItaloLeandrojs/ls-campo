@@ -48,3 +48,12 @@ export function confere(cond, texto) {
   else { falhas++; console.log(`  ✗ ${texto}`); }
 }
 export const resultado = () => { console.log(falhas ? `\n${falhas} falha(s)` : "\nTudo certo"); return falhas; };
+
+/** Escolhe a equipe na tela de escolha e passa pelo crachá (aparece só na primeira vez). */
+export async function entrarEquipe(page, nome) {
+  await page.getByRole("button", { name: new RegExp(nome) }).click();
+  await page.waitForURL(/cracha=|#\/equipe$/);
+  if (/cracha=/.test(page.url())) await page.getByRole("button", { name: /Entrar/ }).click();
+  await page.waitForURL(/#\/equipe$/);
+  await page.locator(".equipe-topo").waitFor();
+}

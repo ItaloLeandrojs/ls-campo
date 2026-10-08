@@ -1,5 +1,5 @@
 // Indicadores reagem aos dados: concluir um serviço soma 1; filtro de equipe destaca a equipe.
-import { servidor, navegador, pagina, confere, resultado, URL_BASE } from "./util.mjs";
+import { servidor, navegador, pagina, confere, resultado, URL_BASE, entrarEquipe } from "./util.mjs";
 
 const lerConcluidos = async (page) => {
   await page.waitForTimeout(900); // contador termina
@@ -19,7 +19,7 @@ try {
 
   // conclui o serviço em execução da Aroeira
   await page.goto(URL_BASE + "app/#/equipe/escolher");
-  await page.getByRole("button", { name: /Aroeira/ }).click();
+  await entrarEquipe(page, "Aroeira");
   await page.getByRole("button", { name: "Dar retorno" }).first().click();
   await page.locator(".check-item input").first().waitFor();
   for (const cb of await page.locator(".check-item input").all()) await cb.check();

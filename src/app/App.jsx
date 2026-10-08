@@ -112,7 +112,19 @@ function LayoutEquipe() {
   );
 }
 
+/** Recalcula "hoje" quando a pessoa volta para a aba (ex.: deixou aberto e passou da meia-noite). */
+function useVirada() {
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const f = () => { if (document.visibilityState === "visible") setTick((t) => t + 1); };
+    window.addEventListener("focus", f);
+    document.addEventListener("visibilitychange", f);
+    return () => { window.removeEventListener("focus", f); document.removeEventListener("visibilitychange", f); };
+  }, []);
+}
+
 export default function App() {
+  useVirada();
   return (
     <HashRouter>
       <Tema />

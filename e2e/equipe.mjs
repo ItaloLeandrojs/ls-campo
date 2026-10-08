@@ -1,6 +1,6 @@
 // Equipe no celular: concluir com checklist e foto, recusar arquivo que não é imagem, reagendar com motivo, planejador vê o resultado.
 import fs from "node:fs";
-import { servidor, navegador, pagina, confere, resultado, URL_BASE } from "./util.mjs";
+import { servidor, navegador, pagina, confere, resultado, URL_BASE, entrarEquipe } from "./util.mjs";
 
 fs.writeFileSync("e2e/nao-imagem.txt", "isto não é uma foto");
 const parar = await servidor();
@@ -9,8 +9,7 @@ try {
   const { page, erros } = await pagina(b, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
   await page.goto(URL_BASE + "app/");
   await page.getByRole("button", { name: /Sou da equipe/ }).click();
-  await page.getByRole("button", { name: /Aroeira/ }).click();
-  await page.waitForURL(/#\/equipe$/);
+  await entrarEquipe(page, "Aroeira");
 
   // Concluir o serviço em execução
   await page.getByRole("button", { name: "Dar retorno" }).first().click();
@@ -41,8 +40,7 @@ try {
   let achou = false;
   for (const eq of ["Aroeira", "Cajueiro", "Carnaúba", "Ipê", "Jatobá", "Mandacaru"]) {
     await page.goto(URL_BASE + "app/#/equipe/escolher");
-    await page.getByRole("button", { name: new RegExp(eq) }).click();
-    await page.waitForURL(/#\/equipe$/);
+    await entrarEquipe(page, eq);
     const iniciar = page.getByRole("button", { name: "Iniciar serviço" }).first();
     if (await iniciar.count()) { await iniciar.click(); achou = true; break; }
   }
