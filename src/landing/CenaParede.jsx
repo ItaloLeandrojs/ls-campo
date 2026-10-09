@@ -1,5 +1,6 @@
 // Cena presa na rolagem: a anatomia de uma parede (bloco, reboco, tinta terracota) e três frases contam o fluxo.
-// Vídeo gerado com IA no Google Flow em 2 etapas (blocos > reboco > tinta), 1080p, convertido em quadros: public/seq/parede.
+// Vídeo gerado com IA no Google Flow (Veo 3.1 Fast) em 2 etapas (blocos > reboco > tinta), 720p nativo sem ampliação,
+// convertido em quadros de 1280 px com bordas esfumadas: public/seq/parede. A cena não passa de 1280 px para não esticar.
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -40,8 +41,8 @@ function Frases() {
 export default function CenaParede({ base }) {
   return (
     <ScrollSequence
-      pasta={`${base}seq/parede`} pastaCelular={`${base}seq/parede-celular`} quadros={168} rolagem={3} ajuste="cover" ajusteCelular="contain" topo={64}
-      poster={`${base}seq/parede/0125.webp`} alt="Parede de blocos de concreto recebendo reboco e depois tinta terracota, em estúdio escuro" className="cena"
+      pasta={`${base}seq/parede`} pastaCelular={`${base}seq/parede-celular`} quadros={168} rolagem={3} ajuste="contain" larguraMax={1280} topo={64}
+      poster={`${base}seq/parede/0168.webp`} alt="Parede de blocos de concreto recebendo reboco e depois tinta terracota, em estúdio escuro" className="cena"
     >
       <Frases />
     </ScrollSequence>

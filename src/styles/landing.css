@@ -86,7 +86,7 @@
 }
 
 /* Cena presa na rolagem: a única seção escura, como uma faixa de cinema (fundo igual ao do vídeo). */
-.cena { background: #030404; color: #F4F4F2; }
+.cena { background: #020202; color: #F4F4F2; }
 .cena-frases { position: relative; height: 100%; max-width: 1200px; margin: 0 auto; pointer-events: none; }
 .cena-frase { position: absolute; left: 24px; bottom: 7vh; max-width: 30ch; display: grid; gap: 6px; padding: 18px 20px; border-radius: 14px; background: rgba(16, 16, 16, .72); box-shadow: 0 12px 30px rgba(0, 0, 0, .35); border: 1px solid rgba(255, 255, 255, .09); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; transform: translateY(12px); transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out); }
 .cena-frase.ativa { opacity: 1; transform: none; }

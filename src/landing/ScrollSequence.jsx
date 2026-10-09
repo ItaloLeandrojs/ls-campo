@@ -25,6 +25,7 @@ export default function ScrollSequence({
   rolagem = 2.5, // quantas alturas de tela a sequência dura
   ajuste = 'cover', // 'cover' preenche a tela; 'contain' mostra o quadro inteiro
   ajusteCelular, // encaixe no celular (padrão: o mesmo de ajuste). 'contain' + fundo da cor do vídeo evita cortar a cena
+  larguraMax, // largura máxima do quadro na tela, em px de CSS: impede esticar um vídeo de resolução baixa
   poster,
   topo = 0, // altura de uma barra fixa no topo: a cena prende logo abaixo dela
   alt = '',
@@ -68,7 +69,8 @@ export default function ScrollSequence({
       const w = Math.round(cv.clientWidth * dpr);
       const h = Math.round(cv.clientHeight * dpr);
       if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
-      const s = (aj === 'contain' ? Math.min : Math.max)(w / img.naturalWidth, h / img.naturalHeight);
+      let s = (aj === 'contain' ? Math.min : Math.max)(w / img.naturalWidth, h / img.naturalHeight);
+      if (larguraMax) s = Math.min(s, (larguraMax * dpr) / img.naturalWidth);
       const dw = img.naturalWidth * s;
       const dh = img.naturalHeight * s;
       if (temFundo) { ctx.fillStyle = fundo; ctx.fillRect(0, 0, w, h); } else ctx.clearRect(0, 0, w, h);
@@ -103,16 +105,19 @@ export default function ScrollSequence({
       tween.kill();
       imgs.forEach((img) => { if (img) img.onload = null; });
     };
-  }, [reduz, pasta, pastaCelular, quadros, digitos, extensao, rolagem, aj, larguraCelular, topo]);
+  }, [reduz, pasta, pastaCelular, quadros, digitos, extensao, rolagem, aj, larguraMax, larguraCelular, topo]);
+
+  // O poster (fundo da seção e imagem do "reduzir movimento") respeita o mesmo limite de largura.
+  const tamPoster = larguraMax && aj === 'contain' ? `min(${larguraMax}px, 100%) auto` : aj;
 
   return (
     <section
       ref={secao}
       className={`seq ${className}`.trim()}
-      style={{ position: 'relative', height: topo ? `calc(100dvh - ${topo}px)` : '100dvh', overflow: 'hidden', ...(poster ? { backgroundImage: `url(${poster})`, backgroundPosition: 'center', backgroundSize: aj, backgroundRepeat: 'no-repeat' } : {}) }}
+      style={{ position: 'relative', height: topo ? `calc(100dvh - ${topo}px)` : '100dvh', overflow: 'hidden', ...(poster ? { backgroundImage: `url(${poster})`, backgroundPosition: 'center', backgroundSize: tamPoster, backgroundRepeat: 'no-repeat' } : {}) }}
     >
       {reduz ? (
-        poster && <img src={poster} alt={alt} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: aj, display: 'block' }} />
+        poster && <img src={poster} alt={alt} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: aj, display: 'block', ...(larguraMax ? { maxWidth: larguraMax, margin: '0 auto' } : {}) }} />
       ) : (
         <canvas ref={canvas} role="img" aria-label={alt} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }} />
       )}

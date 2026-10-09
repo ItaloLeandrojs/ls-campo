@@ -13,7 +13,7 @@ Texto completo: https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md
 
 ## Vídeo da cena da parede (gerado com IA)
 
-Quadros em `public/seq/parede` e `public/seq/parede-celular`, tirados de um vídeo gerado com IA no Google Flow (Veo 3.1, em 2 etapas, com quadros de início e fim feitos no Nano Banana). A parede, o estúdio e os materiais são fictícios.
+Quadros em `public/seq/parede` e `public/seq/parede-celular`, tirados de um vídeo gerado com IA no Google Flow (Veo 3.1 Fast, em 2 etapas, 720p, com quadros de início e fim feitos no Nano Banana). A parede, o estúdio e os materiais são fictícios.
 
 ## Fontes
 
