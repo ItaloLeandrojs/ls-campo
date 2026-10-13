@@ -53,6 +53,8 @@ describe("responder", () => {
     ["o que é o LS Campo", "o-que-e"],
     ["onde está o código", "codigo"],
     ["ver o crachá da equipe", "cracha"],
+    ["quero fazer o tour", "tour"],
+    ["me mostra o passo a passo do sistema", "tour"],
   ])("%s → %s", (pergunta, id) => {
     expect(achou(pergunta)).toBe(id);
   });

@@ -4,6 +4,7 @@ import { INDEXAR } from "../config.js";
 const { titulo = "LS Campo", descricao = "Planejamento de equipes de manutenção predial, do pedido ao retorno. Demonstração com dados fictícios.", classe = "" } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const url = new URL(Astro.url.pathname, Astro.site).href;
+const imagem = new URL(base + "og.jpg", Astro.site).href; // prévia ao compartilhar (1200 x 630), gerada a partir do print da agenda
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -21,6 +22,14 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
   <meta property="og:title" content={titulo}>
   <meta property="og:description" content={descricao}>
   <meta property="og:url" content={url}>
+  <meta property="og:site_name" content="LS Campo">
+  <meta property="og:image" content={imagem}>
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LS Campo: planejamento de equipes de manutenção, com o print da agenda das equipes">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={imagem}>
   <slot name="head" />
 </head>
 <body class={classe}>

@@ -108,6 +108,10 @@ export default function Ajuda({ onde = "app", base = "/" }) {
       if (aqui && a.alvo) botoes.push(<button key="m" type="button" className="ajuda-acao ajuda-acao-forte" onClick={() => mostrar(a.alvo)}><Crosshair size={16} /> Mostrar onde</button>);
       if (!aqui) botoes.push(<button key="i" type="button" className="ajuda-acao ajuda-acao-forte" onClick={() => irPara(a)}>Ir para lá <ArrowRight size={16} /></button>);
     }
+    if (a.tour) {
+      if (onde === "landing") botoes.splice(0, botoes.length, <a key="t" className="ajuda-acao ajuda-acao-forte" href={`${base}app/#/agenda?tour=1`}>Fazer o tour <ArrowRight size={16} /></a>);
+      else botoes.splice(0, botoes.length, <button key="t" type="button" className="ajuda-acao ajuda-acao-forte" onClick={() => { fechar(); window.dispatchEvent(new Event("ls-campo:tour")); }}>Fazer o tour <ArrowRight size={16} /></button>);
+    }
     if (a.link) botoes.push(<a key="l" className="ajuda-acao" href={a.link} target="_blank" rel="noopener">Abrir <ArrowSquareOut size={16} /></a>);
     return botoes.length ? <div className="ajuda-acoes">{botoes}</div> : null;
   }

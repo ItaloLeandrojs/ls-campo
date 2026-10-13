@@ -68,3 +68,32 @@ body:has(.lateral.aberta) .ajuda-botao { display: none; } /* não cobre o menu a
   .ajuda-destaque { animation: none; }
   .ajuda-botao, .ajuda-chip, .ajuda-acao { transition: none; }
 }
+
+/* Tour guiado (src/ajuda/Tour.jsx): a sombra grande escurece a tela e deixa o elemento do passo iluminado. */
+.tour-luz {
+  position: fixed; z-index: 70; border-radius: 12px; pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(15, 15, 15, .52), 0 0 0 2px var(--accent);
+  transition: top 260ms var(--ease-out), left 260ms var(--ease-out), width 260ms var(--ease-out), height 260ms var(--ease-out), opacity 160ms var(--ease-out);
+}
+.tour-luz.trocando { opacity: 0; transition: opacity 120ms var(--ease-out); }
+.tour-cartao {
+  position: fixed; z-index: 71; width: min(340px, calc(100vw - 24px)); display: grid; gap: 6px;
+  padding: 16px; border-radius: 14px; background: var(--surface); color: var(--text); border: 1px solid var(--line-2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .28); font-family: var(--fonte); animation: ajuda-entra 200ms var(--ease-out);
+}
+@media (max-width: 640px) { .tour-cartao { width: auto; } }
+.tour-conta { color: var(--faint); font: 500 12.5px var(--mono); }
+.tour-cartao b { font-size: 17px; }
+.tour-cartao p { margin: 0 0 6px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+.tour-botoes { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tour-botoes span { display: flex; gap: 6px; }
+.tour-botoes button { height: 36px; padding: 0 14px; border-radius: var(--r-ctrl); font: 600 14px var(--fonte); cursor: pointer; transition: transform 120ms var(--ease-out); }
+.tour-botoes button:active { transform: scale(.97); }
+.tour-botoes button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tour-pular { border: 0; background: transparent; color: var(--muted); padding: 0 6px !important; }
+.tour-voltar { border: 1px solid var(--line-2); background: var(--surface); color: var(--text); }
+.tour-proximo { border: 0; background: var(--accent); color: var(--accent-ink); }
+@media (prefers-reduced-motion: reduce) {
+  .tour-luz { transition: none; }
+  .tour-cartao { animation: none; }
+}

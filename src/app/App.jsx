@@ -20,6 +20,7 @@ import Hoje from "../telas/equipe/Hoje.jsx";
 import Retorno from "../telas/equipe/Retorno.jsx";
 import Feitos from "../telas/equipe/Feitos.jsx";
 import Ajuda from "../ajuda/Ajuda.jsx";
+import Tour from "../ajuda/Tour.jsx";
 
 function Tema() {
   const tema = useLoja((s) => s.tema);
@@ -151,6 +152,7 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Ajuda onde="app" base={base} />
+      <Tour />
     </HashRouter>
   );
 }

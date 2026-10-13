@@ -194,10 +194,17 @@ export const ASSUNTOS = [
   },
   {
     id: "telas", titulo: "As três telas",
-    termos: ["telas", "fluxo", "passo a passo", "como usar", "tutorial", "ajuda"],
+    termos: ["telas", "fluxo", "como usar", "ajuda"],
     perguntas: ["como funciona o fluxo", "por onde começo"],
     resposta: "O fluxo tem três telas: a Agenda (o planejador distribui os serviços), a tela da equipe (inicia e dá o retorno no celular) e os Indicadores (o resultado). Comece pela Agenda.",
     rota: "/agenda", alvoLanding: ".l-como",
+  },
+  {
+    id: "tour", titulo: "Fazer o tour",
+    termos: ["tour", "passo a passo", "tutorial", "guia", "apresentacao guiada", "me mostra", "mostrar sistema"],
+    perguntas: ["quero fazer o tour", "me mostra o passo a passo do sistema", "tem um tutorial"],
+    resposta: "O tour mostra em 6 passos onde fica cada coisa: a lista para agendar, a semana das equipes, o pedido novo, os indicadores e o lado da equipe.",
+    rota: "/agenda", tour: true,
   },
 ];
 
