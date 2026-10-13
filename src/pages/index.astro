@@ -6,6 +6,7 @@ import CenaParede from "../landing/CenaParede.jsx";
 import HoverVideo from "../landing/HoverVideo.jsx";
 import AntesDepois from "../landing/AntesDepois.jsx";
 import PainelEmbarque from "../landing/PainelEmbarque.jsx";
+import Ajuda from "../ajuda/Ajuda.jsx";
 import { gerarSemente } from "../dados/semente.js";
 import { serieMensalPrazo } from "../dominio/indicadores.js";
 import { hojeISO, diaSemana, somarDias } from "../dominio/datas.js";
@@ -109,4 +110,5 @@ const frases = ["HOJE NA ARREMATE", `${doDia} SERVIÇOS HOJE`, `${dados.equipes.
       </nav>
     </div>
   </footer>
+  <Ajuda client:idle onde="landing" base={base} />
 </Base>
