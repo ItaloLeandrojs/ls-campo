@@ -51,7 +51,7 @@
 .demo-card { display: flex; gap: 8px; align-items: center; padding: 10px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line-2); font-size: 13.5px; transition: opacity 160ms ease; }
 .demo-card svg { color: var(--accent); flex: none; }
 .demo-card b { display: block; font-size: 13.5px; }
-.demo-card small { display: block; color: var(--faint); font-size: 12.5px; line-height: 1.25; }
+.demo-card small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.25; }
 .demo-card.fantasma { opacity: .3; }
 .demo-no-ar .demo-card { box-shadow: 0 14px 30px rgba(24, 24, 27, .18); transform: rotate(-2deg); background: var(--surface-3); }
 @media (prefers-reduced-motion: no-preference) {
@@ -63,7 +63,7 @@
 .demo-dia { font-size: 13px; font-weight: 650; color: var(--muted); text-transform: capitalize; padding: 4px 2px; }
 .demo-equipe { display: grid; align-content: center; padding: 4px; }
 .demo-equipe b { font-size: 14px; }
-.demo-equipe small { font-size: 11.5px; color: var(--faint); line-height: 1.3; }
+.demo-equipe small { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
 .demo-celula { min-height: 76px; border-radius: 10px; border: 1px dashed var(--line-2); padding: 4px; display: grid; gap: 4px; align-content: start; transition: background-color 120ms ease, border-color 120ms ease; }
 .demo-celula.aceita { border-color: var(--e-concluido); }
 .demo-celula.recusa { background: var(--e-reagendar-bg); }

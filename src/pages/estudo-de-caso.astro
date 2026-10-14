@@ -1,0 +1,147 @@
+---
+// Estudo de caso do LS Campo: a história do projeto com três peças vivas que usam o código real do sistema.
+import Base from "../layouts/Base.astro";
+import "../styles/landing.css";
+import "../styles/caso.css";
+import AberturaCaso from "../estudo/AberturaCaso.jsx";
+import MiniDemo from "../landing/MiniDemo.jsx";
+import RetornoVivo from "../estudo/RetornoVivo.jsx";
+import PrazoVivo from "../estudo/PrazoVivo.jsx";
+import AntesDepois from "../landing/AntesDepois.jsx";
+import { hojeISO } from "../dominio/datas.js";
+import { LINKEDIN, VITRINE } from "../config.js";
+
+const base = import.meta.env.BASE_URL;
+const app = `${base}app/`;
+const codigo = "https://github.com/ItaloLeandrojs/ls-campo";
+const fases = [
+  { titulo: "A semana inteira numa tela.", texto: "Cada equipe tem manhã e tarde. Arrastar o serviço até o turno resolve o agendamento, e a regra confere na hora.", img: `${base}img/agenda.webp`, alt: "Agenda das equipes: lista de serviços a agendar e a semana de seis equipes", w: 1600, h: 1000, forma: "tela" },
+  { titulo: "A equipe responde do celular.", texto: "Checklist, fotos de antes e depois e, quando não dá para terminar, o motivo. Sem instalar nada.", img: `${base}img/celular.webp`, alt: "Tela da equipe no celular com os serviços de hoje", w: 520, h: 1126, forma: "celular" },
+  { titulo: "O resultado aparece sozinho.", texto: "Os indicadores saem da própria agenda. Ninguém monta relatório no fim do mês.", img: `${base}img/indicadores-poster.webp`, alt: "Painel de indicadores com serviços no prazo, ocupação e motivos de reagendamento", w: 1280, h: 760, forma: "tela" },
+];
+---
+<Base titulo="LS Campo · Estudo de caso" descricao="Como tirei a agenda de equipes de manutenção da planilha: regras que evitam erro, retorno com foto e indicadores calculados. Com peças interativas." classe="landing caso">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="l-nav">
+    <div class="l-wrap">
+      <a class="l-marca" href={base}><img src={`${base}favicon.svg`} alt="" width="30" height="30" />LS Campo</a>
+      <nav aria-label="Links">
+        <a class="l-link" href={codigo} target="_blank" rel="noopener">Código</a>
+        <a class="l-btn l-btn-primario" href={app}>Abrir a demonstração</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="c-topo">
+      <div class="l-wrap c-topo-grade">
+        <h1 class="l-sobe">Como tirei a agenda de equipes da planilha</h1>
+        <p class="c-sub l-sobe" style="--i:1">Um sistema de planejamento de manutenção feito do zero: agenda com regras, retorno com foto e indicadores calculados.</p>
+        <dl class="c-ficha l-sobe" style="--i:2">
+          <div><dt>Papel</dt><dd>Produto, design e código</dd></div>
+          <div><dt>Quando</dt><dd>Outubro de 2026</dd></div>
+          <div><dt>Feito com</dt><dd>Astro, React e testes automáticos</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <AberturaCaso client:load fases={fases} />
+
+    <section class="c-problema">
+      <div class="l-wrap c-estreito">
+        <h2>O problema não é falta de equipe. É falta de regra.</h2>
+        <p>Trabalho com planejamento de equipes de campo. Na prática, a agenda vive em planilha e mensagem: a equipe vai para um serviço que não é da especialidade dela, o mesmo turno é prometido duas vezes, o retorno chega sem foto e o indicador do mês é montado na mão, no último dia.</p>
+        <p>O LS Campo é a minha resposta, aplicada a uma empresa fictícia de manutenção predial em Fortaleza. Os nomes e os dados são inventados; as regras são as que eu vejo no dia a dia.</p>
+      </div>
+    </section>
+
+    <section class="c-peca c-peca-agenda" aria-labelledby="t-agenda">
+      <div class="l-wrap c-peca-grade">
+        <div class="c-peca-texto">
+          <h2 id="t-agenda">Tente agendar errado.</h2>
+          <p>É a mesma regra que roda no sistema. Arraste a hidráulica para a Aroeira, que só faz pintura e reparos, e veja o que acontece.</p>
+        </div>
+        <MiniDemo client:visible linkDemo={app} hojeBuild={hojeISO()} />
+      </div>
+    </section>
+
+    <section class="c-peca c-peca-retorno" aria-labelledby="t-retorno">
+      <div class="l-wrap">
+        <h2 id="t-retorno">Sem checklist, não tem retorno.</h2>
+        <p class="c-intro">Na tela da equipe, o botão de enviar só libera com os itens obrigatórios marcados. As fotos de antes e depois vão junto e ficam na ficha do serviço.</p>
+        <div class="c-retorno-grade">
+          <RetornoVivo client:visible />
+          <div class="c-retorno-fotos">
+            <AntesDepois client:visible antes={`${base}img/retorno-antes.webp`} depois={`${base}img/retorno-depois.webp`} rotuloAntes="Checklist pendente" rotuloDepois="Pronto para enviar" alt="tela de retorno do serviço no celular" largura={780} altura={1688} />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="c-peca c-peca-prazo" aria-labelledby="t-prazo">
+      <div class="l-wrap c-estreito-largo">
+        <h2 id="t-prazo">O indicador não é digitado. É calculado.</h2>
+        <p class="c-intro">Cada quadrado é um serviço concluído em setembro. Toque para mudar a data de conclusão e veja a porcentagem no prazo recalcular, com a mesma função do painel de Indicadores.</p>
+        <PrazoVivo client:visible />
+      </div>
+    </section>
+
+    <section class="c-decisoes" aria-labelledby="t-decisoes">
+      <div class="l-wrap">
+        <h2 id="t-decisoes">Decisões que fizeram diferença</h2>
+        <div class="c-decisoes-grade">
+          <article>
+            <h3>Os dados ficam no navegador.</h3>
+            <p>Sem login e sem servidor: quem recebe o link testa na hora, e nada sai do computador. As fotos são reduzidas e guardadas no próprio navegador.</p>
+          </article>
+          <article>
+            <h3>A regra mora num lugar só.</h3>
+            <p>A mesma função decide no arrastar, no menu de agendar e nesta página. Mudou a regra, mudou em todo lugar, e os testes avisam se algo quebrar.</p>
+          </article>
+          <article>
+            <h3>Arrastar não é o único jeito.</h3>
+            <p>No mouse e no toque, arrasta-se o serviço até o turno. Quem usa teclado ou não consegue arrastar abre o serviço e escolhe equipe, dia e turno num menu, com as mesmas regras.</p>
+          </article>
+          <article>
+            <h3>O pesado só carrega quando precisa.</h3>
+            <p>O crachá em 3D só é baixado quando a pessoa escolhe a equipe. Quem só olha a agenda não paga por ele.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="c-numeros" aria-labelledby="t-numeros">
+      <div class="l-wrap c-numeros-grade">
+        <h2 id="t-numeros">Como eu sei que funciona</h2>
+        <div class="c-numero-grande">
+          <b class="num">116</b>
+          <span>testes automáticos das regras, datas, indicadores e da ajuda do site</span>
+        </div>
+        <ul class="c-numeros-lista">
+          <li><b class="num">6</b><span>roteiros que abrem o site num navegador de verdade e usam como uma pessoa: agendar, dar retorno, filtrar, ver indicadores</span></li>
+          <li><b class="num">0</b><span>servidores para manter. É um site estático no GitHub Pages</span></li>
+          <li><b class="num">100</b><span>em acessibilidade e boas práticas no Lighthouse, na demonstração, no celular e no computador</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="c-depois">
+      <div class="l-wrap c-estreito">
+        <h2>O que vem depois</h2>
+        <p>Funcionar sem internet, para a equipe dar o retorno mesmo sem sinal e enviar quando a conexão voltar. Depois, as rotas do dia no mapa e os indicadores exportados para Excel.</p>
+        <a class="l-btn l-btn-primario l-btn-grande" href={app}>Abrir a demonstração</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="l-rodape">
+    <div class="l-wrap">
+      <p>Demonstração com empresa e dados fictícios. Projeto de portfólio de <a href={LINKEDIN} target="_blank" rel="noopener">Italo Leandro</a>.</p>
+      <nav aria-label="Mais projetos">
+        <a href={base}>Apresentação do LS Campo</a>
+        <a href={VITRINE} target="_blank" rel="noopener">Dashboards em Power BI</a>
+        <a href={codigo} target="_blank" rel="noopener">Código no GitHub</a>
+      </nav>
+    </div>
+  </footer>
+</Base>

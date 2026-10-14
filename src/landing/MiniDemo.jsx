@@ -32,14 +32,14 @@ function Cartao({ s, arrastando, treme }) {
 
 function Arrastavel({ s, treme }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: s.id });
-  return <div ref={setNodeRef} {...listeners} {...attributes} className="demo-arrastavel" aria-label={`${NOME[s.tipo]}, ${s.cliente}. Arraste para uma equipe ou use o menu abaixo.`}><Cartao s={s} arrastando={isDragging} treme={treme} /></div>;
+  return <div ref={setNodeRef} {...listeners} {...attributes} className="demo-arrastavel"><Cartao s={s} arrastando={isDragging} treme={treme} /></div>;
 }
 
 function Celula({ equipe, data, ativo, servicos, hoje, children }) {
   const { setNodeRef, isOver } = useDroppable({ id: `${equipe.id}|${data}` });
   let estado = "";
   if (ativo) estado = podeAgendar({ servico: ativo, equipe, data, turno: "manha", servicos, hoje }).ok ? " aceita" : " recusa";
-  return <div ref={setNodeRef} className={`demo-celula${estado}${isOver ? " sobre" : ""}`} aria-label={`${equipe.nome}, ${formatar(data)}`}>{children}</div>;
+  return <div ref={setNodeRef} role="group" className={`demo-celula${estado}${isOver ? " sobre" : ""}`} aria-label={`${equipe.nome}, ${formatar(data)}`}>{children}</div>;
 }
 
 const inicial = (dias) => [
@@ -94,7 +94,7 @@ export default function MiniDemo({ linkDemo, hojeBuild }) {
   return (
     <div className="demo">
       <DndContext id="mini-demo" sensors={sensores} collisionDetection={pointerWithin} onDragStart={({ active }) => setAtivo(active.id)} onDragCancel={() => setAtivo(null)} onDragEnd={aoSoltar}>
-        <div className="demo-lista" aria-label="Serviços a agendar">
+        <div className="demo-lista" role="group" aria-label="Serviços a agendar">
           <span className="demo-rotulo">A agendar</span>
           {pendentes.map((s) => <Arrastavel key={s.id} s={s} treme={treme === s.id} />)}
           {pendentes.length === 0 && (
@@ -103,11 +103,11 @@ export default function MiniDemo({ linkDemo, hojeBuild }) {
             </button>
           )}
         </div>
-        <div className="demo-grade" role="grid" aria-label="Mini agenda">
+        <div className="demo-grade" role="group" aria-label="Mini agenda: três equipes nos próximos três dias">
           <span />
-          {dias.map((d) => <span key={d} className="demo-dia" role="columnheader">{formatar(d)}</span>)}
+          {dias.map((d) => <span key={d} className="demo-dia" aria-hidden="true">{formatar(d)}</span>)}
           {EQUIPES.map((eq) => [
-            <span key={eq.id} className="demo-equipe" role="rowheader"><b>{eq.nome}</b><small>{eq.especialidades.map((t) => NOME[t] || "Reparos").join(" · ")}</small></span>,
+            <span key={eq.id} className="demo-equipe"><b>{eq.nome}</b><small>{eq.especialidades.map((t) => NOME[t] || "Reparos").join(" · ")}</small></span>,
             ...dias.map((d) => (
               <Celula key={`${eq.id}${d}`} equipe={eq} data={d} ativo={ativoObj} servicos={servicos} hoje={hoje}>
                 {servicos.filter((s) => s.agendamento?.equipeId === eq.id && s.agendamento.data === d).map((s) => (
