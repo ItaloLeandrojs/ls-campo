@@ -6,7 +6,7 @@ import path from "node:path";
 const LISTA = path.resolve("..", "ls-campo-termos-proibidos.txt");
 if (!fs.existsSync(LISTA)) { console.error(`Lista de termos não encontrada em ${LISTA}. Crie o arquivo (um termo por linha).`); process.exit(1); }
 const termos = fs.readFileSync(LISTA, "utf8").split(/\r?\n/).map(t => t.trim()).filter(Boolean);
-const pastas = ["src", "public", "dist", "tests", "e2e"].filter(p => fs.existsSync(p));
+const pastas = ["src", "public", "dist", "tests", "e2e", "scripts"].filter(p => fs.existsSync(p));
 const extensoes = /\.(astro|jsx?|mjs|css|html|json|md|txt|svg)$/i;
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const regras = termos.map(t => ({ t, re: new RegExp(`(?<![\\p{L}\\p{N}])${esc(t)}(?![\\p{L}\\p{N}])`, "u") }));

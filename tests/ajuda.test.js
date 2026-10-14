@@ -58,6 +58,9 @@ describe("responder", () => {
     ["baixar relatório em pdf", "exportar"],
     ["imprimir o painel", "exportar"],
     ["me mostra o passo a passo do sistema", "tour"],
+    ["ver a rota da equipe no mapa", "rotas"],
+    ["qual o melhor horário para não perder tempo no trânsito", "rotas"],
+    ["quantos km a equipe roda por dia", "rotas"],
   ])("%s → %s", (pergunta, id) => {
     expect(achou(pergunta)).toBe(id);
   });

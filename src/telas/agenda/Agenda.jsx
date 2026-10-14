@@ -12,6 +12,9 @@ import CardServico, { ICONE_TIPO } from "./CardServico.jsx";
 import DialogoAgendar from "./DialogoAgendar.jsx";
 import FichaServico from "../../ui/FichaServico.jsx";
 import Gaveta from "../../ui/Gaveta.jsx";
+import { custosDasVagas, melhorVaga } from "../../dominio/encaixe.js";
+import { textoKm } from "../../dominio/rotas.js";
+import geo from "../../dados/geo-pontos.json";
 import "./agenda.css";
 
 const MOLA = { type: "spring", duration: 0.4, bounce: 0.2 };
@@ -42,16 +45,24 @@ function Arrastavel({ servico, cliente, hoje, compacto, recem, treme, aoAbrir, b
   return card;
 }
 
-function Vaga({ equipe, data, turno, ativo, servicos, hoje, children }) {
+/** Chave da vaga no mapa de custos (serviço de dia inteiro usa o dia todo). */
+const chaveVaga = (servico, equipeId, data, turno) => `${equipeId}|${data}|${servico?.duracao === "dia" ? "dia" : turno}`;
+
+function Vaga({ equipe, data, turno, ativo, servicos, hoje, custos, melhor, children }) {
   const passado = ehPassado(data, hoje);
   const { setNodeRef, isOver } = useDroppable({ id: `vaga|${equipe.id}|${data}|${turno}`, data: { equipeId: equipe.id, data, turno }, disabled: passado });
   let estado = "";
+  let km;
   if (ativo && !passado) {
     const r = podeAgendar({ servico: ativo, equipe, data, turno, servicos, hoje });
     estado = r.ok ? (r.aviso ? " aceita-aviso" : " aceita") : " recusa";
+    const chave = chaveVaga(ativo, equipe.id, data, turno);
+    const c = r.ok ? custos?.[chave] : null;
+    if (c) km = `+${textoKm(c.extraKm)}`;
+    if (c && melhor?.chave === chave) { estado += " melhor"; km = `Melhor · ${km}`; }
   }
   return (
-    <div ref={setNodeRef} className={`vaga${passado ? " passada" : ""}${estado}${isOver ? " sobre" : ""}`} data-turno={turno} aria-label={`${equipe.nome}, ${formatar(data)}, ${ROTULO_TURNO[turno]}`}>
+    <div ref={setNodeRef} className={`vaga${passado ? " passada" : ""}${estado}${isOver ? " sobre" : ""}`} data-turno={turno} data-km={km} aria-label={`${equipe.nome}, ${formatar(data)}, ${ROTULO_TURNO[turno]}${km ? `, ${km} de deslocamento` : ""}`}>
       {children}
     </div>
   );
@@ -102,12 +113,15 @@ export default function Agenda() {
   const [diaMovel, setDiaMovel] = useState(hoje);
   const tempo = useRef();
 
-  const dias = diasDaSemana(semana);
+  const dias = useMemo(() => diasDaSemana(semana), [semana]);
   const porId = useMemo(() => Object.fromEntries(servicos.map((s) => [s.id, s])), [servicos]);
   const ativo = ativoId ? porId[ativoId] : null;
   const abertos = useMemo(() => servicos
     .filter((s) => ESTADOS_ABERTOS.includes(s.etapa) && (!filtro || s.tipo === filtro))
     .sort((a, b) => (a.prioridade === "urgente" ? 0 : 1) - (b.prioridade === "urgente" ? 0 : 1) || a.prazo.localeCompare(b.prazo)), [servicos, filtro]);
+  // Enquanto arrasta: quantos km cada vaga livre soma ao dia da equipe, e qual é a mais econômica.
+  const custos = useMemo(() => (ativo ? custosDasVagas({ servico: ativo, equipes, dias: dias.filter((d) => !ehPassado(d, hoje)), servicos, hoje, geo }) : null), [ativo, equipes, dias, servicos, hoje]);
+  const melhor = useMemo(() => (custos ? melhorVaga(custos) : null), [custos]);
   const daSemana = useMemo(() => servicos.filter((s) => s.agendamento && s.agendamento.data >= dias[0] && s.agendamento.data <= dias[5]), [servicos, dias]);
 
   const avisar = (m) => { setMsg(m); clearTimeout(tempo.current); tempo.current = setTimeout(() => setMsg(null), 6000); };
@@ -171,7 +185,9 @@ export default function Agenda() {
           <button type="button" className="btn btn-primario" onClick={() => navigate("/servicos/novo")}><Plus size={18} /> Novo serviço</button>
         </div>
       </div>
-      <div className={`agenda-msg${msg ? ` ${msg.tipo}` : ""}`} role="status" aria-live="polite">{msg?.texto}</div>
+      <div className={`agenda-msg${msg ? ` ${msg.tipo}` : ""}${!msg && ativo && larga ? " dica" : ""}`} role="status" aria-live="polite">
+        {msg?.texto ?? (ativo && larga ? (melhor ? "Cada vaga mostra quantos km o serviço soma ao dia da equipe. A destacada é a de menor deslocamento." : "Nenhuma vaga livre nesta semana para este serviço.") : null)}
+      </div>
 
       <DndContext sensors={sensores} collisionDetection={pointerWithin} onDragStart={({ active }) => setAtivoId(active.id)} onDragCancel={() => setAtivoId(null)} onDragEnd={aoSoltar}>
         <div className={`agenda-corpo${larga ? "" : " estreita"}`}>
@@ -202,10 +218,10 @@ export default function Agenda() {
                       const bloqueado = (s) => !s || ["concluido", "execucao"].includes(s.etapa) || ehPassado(d, hoje);
                       return (
                         <div key={`${eq.id}-${d}`} className={`grade-celula${d === hoje ? " hoje" : ""}`} role="gridcell">
-                          <Vaga equipe={eq} data={d} turno="manha" ativo={ativo} servicos={servicos} hoje={hoje}>
+                          <Vaga equipe={eq} data={d} turno="manha" ativo={ativo} servicos={servicos} hoje={hoje} custos={custos} melhor={melhor}>
                             {sm && <Arrastavel servico={sm} cliente={clientes[sm.clienteId]} hoje={hoje} compacto aoAbrir={setAberto} recem={recem === sm.id} treme={treme === sm.id} bloqueado={bloqueado(sm)} />}
                           </Vaga>
-                          <Vaga equipe={eq} data={d} turno="tarde" ativo={ativo} servicos={servicos} hoje={hoje}>
+                          <Vaga equipe={eq} data={d} turno="tarde" ativo={ativo} servicos={servicos} hoje={hoje} custos={custos} melhor={melhor}>
                             {st && st !== sm && <Arrastavel servico={st} cliente={clientes[st.clienteId]} hoje={hoje} compacto aoAbrir={setAberto} recem={recem === st.id} treme={treme === st.id} bloqueado={bloqueado(st)} />}
                           </Vaga>
                         </div>

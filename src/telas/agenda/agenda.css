@@ -80,6 +80,16 @@
 .vaga.recusa:empty { background: var(--e-reagendar-bg); }
 .vaga.sobre.aceita, .vaga.sobre.aceita-aviso { background: var(--e-concluido-bg); border-style: solid; }
 .vaga.sobre.recusa { border-color: var(--e-reagendar); border-style: solid; }
+/* km que o serviço soma ao dia da equipe (só nas vagas livres, durante o arraste) */
+.vaga[data-km]:empty { display: grid; place-items: center; }
+.vaga[data-km]:empty::after { content: attr(data-km); font: 600 12.5px/1.25 var(--fonte); color: var(--e-concluido); text-align: center; padding: 0 4px; }
+.vaga.aceita-aviso[data-km]:empty::after { color: var(--aviso); }
+.vaga.melhor:empty { border: 2px solid var(--accent); background: var(--accent-soft); }
+.vaga.melhor:empty::after { color: var(--accent); font-weight: 700; }
+.agenda-msg.dica {
+  position: fixed; left: 50%; bottom: 20px; z-index: 50; transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px));
+  padding: 10px 16px; border-radius: 10px; background: var(--text); color: var(--bg); box-shadow: var(--sombra); pointer-events: none;
+}
 .ocupa-dia, .ocupa-dia-mola { position: absolute; inset: 4px; z-index: 1; }
 .ocupa-dia-mola > .card-sv { height: 100%; }
 

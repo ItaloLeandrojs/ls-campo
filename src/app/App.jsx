@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { HashRouter, Routes, Route, Navigate, NavLink, Outlet, useNavigate, useLocation } from "react-router";
-import { CalendarDots, ClipboardText, Buildings, UsersThree, ChartBar, ArrowsClockwise, HardHat, List, X, ListChecks, House, IdentificationBadge } from "@phosphor-icons/react";
+import { CalendarDots, ClipboardText, Buildings, UsersThree, ChartBar, ArrowsClockwise, HardHat, List, X, ListChecks, House, IdentificationBadge, MapTrifold } from "@phosphor-icons/react";
 import "../styles/app.css";
 import { useLoja } from "../dados/loja.js";
 import { BotaoTema, recomecarTudo } from "../ui/controles.jsx";
@@ -19,6 +19,8 @@ import Indicadores from "../telas/indicadores/Indicadores.jsx";
 import Hoje from "../telas/equipe/Hoje.jsx";
 import Retorno from "../telas/equipe/Retorno.jsx";
 import Feitos from "../telas/equipe/Feitos.jsx";
+import Rotas from "../telas/rotas/Rotas.jsx";
+import RotaEquipe from "../telas/rotas/RotaEquipe.jsx";
 import Ajuda from "../ajuda/Ajuda.jsx";
 import Tour from "../ajuda/Tour.jsx";
 
@@ -43,6 +45,7 @@ const MENU = [
   ["/agenda", "Agenda", CalendarDots],
   ["/servicos", "Serviços", ClipboardText],
   ["/clientes", "Clientes", Buildings],
+  ["/rotas", "Rotas", MapTrifold],
   ["/equipes", "Equipes", UsersThree],
   ["/indicadores", "Indicadores", ChartBar],
 ];
@@ -141,6 +144,7 @@ export default function App() {
           <Route path="/servicos/:id" element={<FichaServicoPagina />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/clientes/:id" element={<FichaCliente />} />
+          <Route path="/rotas" element={<Rotas />} />
           <Route path="/equipes" element={<Equipes />} />
           <Route path="/indicadores" element={<Indicadores />} />
         </Route>
@@ -148,6 +152,7 @@ export default function App() {
           <Route path="/equipe" element={<Hoje />} />
           <Route path="/equipe/servico/:id" element={<Retorno />} />
           <Route path="/equipe/feitos" element={<Feitos />} />
+          <Route path="/equipe/rota" element={<RotaEquipe />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

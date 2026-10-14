@@ -149,6 +149,11 @@
 .opcao-turno { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; cursor: pointer; }
 .ok-regra, .erro-regra { margin: 0; font-size: 14px; padding: 10px 12px; border-radius: 10px; }
 .ok-regra { background: var(--e-concluido-bg); color: var(--e-concluido); }
+.sugestao-rota { display: flex; align-items: center; justify-content: space-between; gap: 10px 12px; flex-wrap: wrap; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent-soft); font-size: 14px; }
+.sugestao-rota b { color: var(--accent); }
+.sugestao-rota small { font-size: 13px; font-weight: 600; color: var(--accent); }
+.sugestao-rota .btn { min-height: 36px; }
+.km-regra { margin: 0; font-size: 13.5px; color: var(--muted); }
 .erro-regra { background: var(--e-reagendar-bg); color: var(--e-reagendar); }
 .gaveta { margin: 0 0 0 auto; height: 100dvh; max-height: 100dvh; width: min(460px, 100vw); max-width: 100vw; border-radius: 16px 0 0 16px; }
 .gaveta-miolo { height: 100%; overflow-y: auto; padding-bottom: 24px; }

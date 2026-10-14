@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router";
-import { MapPin, Play, ClipboardText } from "@phosphor-icons/react";
+import { MapPin, Play, ClipboardText, MapTrifold } from "@phosphor-icons/react";
 import { useLoja } from "../../dados/loja.js";
 import { useMapas, useServicos, useHoje } from "../../dados/seletores.js";
 import { TIPO, ROTULO_TURNO } from "../../dominio/tipos.js";
 import { formatar, somarDias, diaSemana } from "../../dominio/datas.js";
+import { rotaDoDia, textoKm } from "../../dominio/rotas.js";
+import geo from "../../dados/geo-pontos.json";
 import { Selo } from "../../ui/base.jsx";
 import { ICONE_TIPO } from "../agenda/CardServico.jsx";
 import "./equipe.css";
@@ -39,12 +41,14 @@ export function ServicoCampo({ s, cliente, hoje, acoes = true }) {
 }
 
 export default function Hoje() {
+  const navigate = useNavigate();
   const hoje = useHoje();
   const servicos = useServicos();
   const equipeAtual = useLoja((s) => s.equipeAtual);
   const { clientes } = useMapas();
   const meus = servicos.filter((s) => s.agendamento?.equipeId === equipeAtual);
   const doDia = meus.filter((s) => s.agendamento.data === hoje).sort((a, b) => ORDEM[a.agendamento.turno] - ORDEM[b.agendamento.turno]);
+  const rota = rotaDoDia({ servicos, equipeId: equipeAtual, data: hoje, geo });
   const proximos = [];
   for (let d = somarDias(hoje, 1); proximos.length < 3; d = somarDias(d, 1)) if (diaSemana(d) !== 0) proximos.push(d);
 
@@ -54,7 +58,14 @@ export default function Hoje() {
       {doDia.length === 0 ? (
         <div className="vazio"><b>{diaSemana(hoje) === 0 ? "Domingo, sem serviços." : "Nenhum serviço para hoje."}</b><p>Os próximos aparecem abaixo quando o planejador agendar.</p></div>
       ) : (
-        <div className="sv-lista">{doDia.map((s) => <ServicoCampo key={s.id} s={s} cliente={clientes[s.clienteId]} hoje={hoje} />)}</div>
+        <>
+          {rota.paradas.length > 0 && (
+            <button type="button" className="btn btn-secundario btn-grande btn-rota" onClick={() => navigate("/equipe/rota")}>
+              <MapTrifold size={20} weight="duotone" /> Rota de hoje <span className="km">{textoKm(rota.totalKm)}</span>
+            </button>
+          )}
+          <div className="sv-lista">{doDia.map((s) => <ServicoCampo key={s.id} s={s} cliente={clientes[s.clienteId]} hoje={hoje} />)}</div>
+        </>
       )}
       <h2 className="equipe-h2">Próximos dias</h2>
       {proximos.map((d) => {

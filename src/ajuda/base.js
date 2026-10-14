@@ -207,6 +207,13 @@ export const ASSUNTOS = [
     rota: "/indicadores", alvo: ".exportar",
   },
   {
+    id: "rotas", titulo: "Rotas e deslocamento",
+    termos: ["rota", "rotas", "mapa", "km", "quilometro", "quilometros", "deslocamento", "transito", "trajeto", "caminho", "distancia", "sede", "perder tempo", "rota de hoje", "menor deslocamento", "roda por dia"],
+    perguntas: ["ver a rota da equipe no mapa", "qual o melhor horário para não perder tempo no trânsito", "quantos km a equipe roda por dia"],
+    resposta: "Em Rotas você vê o caminho de cada equipe no dia: sai da sede, em Fátima, faz as visitas na ordem dos turnos e volta, com km e tempo de cada trecho. Ao arrastar um serviço na Agenda, cada vaga livre mostra quantos km ele soma ao dia da equipe e a de menor deslocamento fica destacada. No agendar sem arrastar aparece o botão \"Usar sugestão\". A equipe vê a \"Rota de hoje\" no celular.",
+    rota: "/rotas", alvo: ".rotas-equipes",
+  },
+  {
     id: "tour", titulo: "Fazer o tour",
     termos: ["tour", "passo a passo", "tutorial", "guia", "apresentacao guiada", "me mostra", "mostrar sistema"],
     perguntas: ["quero fazer o tour", "me mostra o passo a passo do sistema", "tem um tutorial"],

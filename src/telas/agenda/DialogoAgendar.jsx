@@ -5,6 +5,9 @@ import { useMapas, useServicos, useEquipes, useHoje } from "../../dados/seletore
 import { podeAgendar } from "../../dominio/regras.js";
 import { formatar, somarDias, diaSemana } from "../../dominio/datas.js";
 import { TIPO, ROTULO_TURNO } from "../../dominio/tipos.js";
+import { custosDasVagas, melhorVaga } from "../../dominio/encaixe.js";
+import { textoKm } from "../../dominio/rotas.js";
+import geo from "../../dados/geo-pontos.json";
 
 /** Agendar ou mover sem arrastar. Só oferece equipes com a especialidade e dias a partir de hoje. */
 export default function DialogoAgendar({ servico, aoFechar, aoAgendar }) {
@@ -31,10 +34,18 @@ export default function DialogoAgendar({ servico, aoFechar, aoAgendar }) {
     setTurno(servico.agendamento?.turno && servico.agendamento.turno !== "dia" ? servico.agendamento.turno : "manha");
   }, [servico, aptas, dias, hoje]);
 
+  // Sugestão: a vaga que menos aumenta o deslocamento da equipe (saindo e voltando pela sede).
+  const custos = useMemo(() => (servico ? custosDasVagas({ servico, equipes: aptas, dias, servicos, hoje, geo }) : {}), [servico, aptas, dias, servicos, hoje]);
+  const melhor = useMemo(() => melhorVaga(custos), [custos]);
+
   if (!servico) return <Dialogo aberto={false} aoFechar={aoFechar} />;
   const equipe = equipes.find((e) => e.id === equipeId);
   const dia = servico.duracao === "dia";
   const regra = equipe && data ? podeAgendar({ servico, equipe, data, turno: dia ? "dia" : turno, servicos, hoje }) : { ok: false, motivo: "Escolha equipe e dia." };
+  const custo = regra.ok ? custos[`${equipeId}|${data}|${dia ? "dia" : turno}`] : null;
+  const naSugestao = melhor && melhor.equipeId === equipeId && melhor.data === data && (dia || melhor.turno === turno);
+  const usarSugestao = () => { setEquipeId(melhor.equipeId); setData(melhor.data); if (!dia) setTurno(melhor.turno); };
+  const nomeEq = (id) => equipes.find((e) => e.id === id)?.nome;
 
   const confirmar = () => {
     const r = agendar(servico.id, { equipeId, data, turno: dia ? "dia" : turno });
@@ -48,6 +59,14 @@ export default function DialogoAgendar({ servico, aoFechar, aoAgendar }) {
         <button type="button" className="btn btn-primario" disabled={!regra.ok} onClick={confirmar}>{servico.agendamento ? "Mover" : "Agendar"}</button>
       </>}>
       <p className="dialogo-resumo"><b>{clientes[servico.clienteId]?.nome}</b> · {TIPO[servico.tipo].nome} · {dia ? "dia inteiro" : "um turno"} · prazo {formatar(servico.prazo, "curto")}</p>
+      {melhor && (
+        <div className={`sugestao-rota${naSugestao ? " usada" : ""}`}>
+          <span>
+            <b>Menor deslocamento:</b> {nomeEq(melhor.equipeId)}, {formatar(melhor.data)}{dia ? "" : `, ${ROTULO_TURNO[melhor.turno].toLowerCase()}`} <span>(+{textoKm(melhor.extraKm)})</span>
+          </span>
+          {naSugestao ? <small>Escolhida</small> : <button type="button" className="btn btn-secundario" onClick={usarSugestao}>Usar sugestão</button>}
+        </div>
+      )}
       <div className="campo">
         <label htmlFor="ag-equipe">Equipe</label>
         <select id="ag-equipe" value={equipeId} onChange={(e) => setEquipeId(e.target.value)}>
@@ -72,6 +91,7 @@ export default function DialogoAgendar({ servico, aoFechar, aoAgendar }) {
       <p className={regra.ok ? (regra.aviso ? "aviso" : "ok-regra") : "erro-regra"} role="status" aria-live="polite">
         {regra.ok ? regra.aviso || "Turno livre. Pode agendar." : regra.motivo}
       </p>
+      {custo && <p className="km-regra">Esta escolha soma <b>{textoKm(custo.extraKm)}</b> ao dia da equipe ({textoKm(custo.totalKm)} no total, saindo e voltando pela sede).</p>}
     </Dialogo>
   );
 }
