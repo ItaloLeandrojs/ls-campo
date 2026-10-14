@@ -4,15 +4,10 @@ import { esperaParaSair, CICLO } from "./abertura-tempo.js";
 const reduz = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const umaVez = (alvo, evento) => new Promise((r) => alvo.addEventListener(evento, r, { once: true }));
 
-/** Página pronta: fontes e, no app, o React montado; nas outras, a primeira imagem do conteúdo. No máximo 8 s. */
+/** Página pronta: fontes e, no app, o React montado. Fotos não seguram a abertura: cada uma tem o próprio logo e entra quando chega. No máximo 8 s. */
 function pronto() {
   const espera = [document.fonts?.ready];
-  if (document.body.dataset.espera === "app") {
-    espera.push(window.__lsCampoPronto ? null : umaVez(window, "ls-campo:pronto"));
-  } else {
-    const img = document.querySelector("main img");
-    if (img && !img.complete) espera.push(Promise.race([umaVez(img, "load"), umaVez(img, "error")]));
-  }
+  if (document.body.dataset.espera === "app" && !window.__lsCampoPronto) espera.push(umaVez(window, "ls-campo:pronto"));
   return Promise.race([Promise.all(espera), new Promise((r) => setTimeout(r, 8000))]);
 }
 
