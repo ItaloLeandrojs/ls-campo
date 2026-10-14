@@ -1,10 +1,10 @@
 // Gera src/styles/carregando.css a partir do desenho do logo (7 tijolos). Rodar: node scripts/gerar-carregando.mjs
-// O tempo (ciclo de 1,75 s, parede completa de 58% a 88%) precisa bater com src/ui/abertura-tempo.js.
+// O tempo (ciclo de 1,75 s, parede completa de 58% a 92%) precisa bater com src/ui/abertura-tempo.js.
 import fs from "node:fs";
 import { TIJOLOS as T } from "../src/ui/tijolos.js";
 const quadro = (i, nome, queda) => {
   const s = 3 + 7 * i, l = s + 13;
-  return `@keyframes ${nome}${i} { 0%, ${s}% { opacity: 0; transform: translateY(${queda}); animation-timing-function: cubic-bezier(.23, 1, .32, 1); } ${l}%, 88% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; transform: none; } }`;
+  return `@keyframes ${nome}${i} { 0%, ${s}% { opacity: 0; transform: translateY(${queda}); animation-timing-function: cubic-bezier(.23, 1, .32, 1); } ${l}%, 92% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: none; } }`;
 };
 const rects = T.map(([x, y, w], i) => `<rect class="t t${i}" x="${x}" y="${y}" width="${w}" height="40" rx="5"/>`).join("");
 // SVG autônomo, para fundo de imagens que ainda estão carregando
@@ -26,7 +26,7 @@ ${T.map((_, i) => quadro(i, "tijolo", "-85%")).join("\n")}
   transition: opacity 480ms cubic-bezier(.23, 1, .32, 1), filter 480ms cubic-bezier(.23, 1, .32, 1), transform 480ms cubic-bezier(.23, 1, .32, 1); }
 #abertura .logo-tijolos { width: 88px; height: 88px; }
 #abertura.saindo { opacity: 0; filter: blur(8px); transform: scale(1.04); pointer-events: none; }
-#abertura.saindo .t { animation-play-state: paused; }
+#abertura.saindo .t { animation: none; opacity: 1; } /* sai sempre com a parede completa */
 
 /* Pedaço carregando no próprio lugar */
 .carregando-logo { display: grid; place-items: center; gap: 10px; color: var(--muted); font-size: 13.5px; }

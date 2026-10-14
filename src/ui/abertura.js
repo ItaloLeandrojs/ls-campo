@@ -1,5 +1,5 @@
 // Saída da abertura e imagens carregando com o logo. Roda no navegador (script do Abertura.astro).
-import { esperaParaSair } from "./abertura-tempo.js";
+import { esperaParaSair, CICLO } from "./abertura-tempo.js";
 
 const reduz = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const umaVez = (alvo, evento) => new Promise((r) => alvo.addEventListener(evento, r, { once: true }));
@@ -28,10 +28,15 @@ export async function iniciarAbertura() {
   if (!el) return;
   await pronto();
   const anim = el.querySelector(".t0")?.getAnimations?.()[0];
-  const ms = reduz() || !anim
-    ? Math.max(0, 800 - performance.now())
-    : esperaParaSair({ agora: Number(anim.currentTime) || 0 });
-  setTimeout(() => sair(el), ms);
+  if (reduz() || !anim) { setTimeout(() => sair(el), Math.max(0, 800 - performance.now())); return; }
+  // Com a página ainda montando, o setTimeout pode atrasar: confere de novo e, se a parede já passou, espera a próxima.
+  const tentar = () => {
+    const ms = esperaParaSair({ agora: Number(anim.currentTime) || 0 });
+    if (ms > 0) { setTimeout(tentar, ms); return; }
+    document.documentElement.dataset.aberturaFase = Math.round((Number(anim.currentTime) || 0) % CICLO); // conferido nos testes
+    sair(el);
+  };
+  tentar();
 }
 
 /** Imagens do conteúdo que ainda não chegaram mostram o logo animado no lugar e entram de embaçado para nítido. */

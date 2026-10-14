@@ -9,7 +9,7 @@ describe("esperaParaSair (abertura com os tijolos)", () => {
     expect(esperaParaSair({ agora: CICLO + 1200 })).toBe(0);
   });
   it("se a página demorou, espera a próxima parede completa (nunca sai no meio da montagem)", () => {
-    expect(esperaParaSair({ agora: 1600 })).toBe(CICLO + PAREDE[0] - 1600);
+    expect(esperaParaSair({ agora: 1700 })).toBe(CICLO + PAREDE[0] - 1700);
     expect(esperaParaSair({ agora: CICLO + 50 })).toBe(PAREDE[0] - 50);
   });
   it("o momento de sair cai sempre dentro da janela da parede completa", () => {
