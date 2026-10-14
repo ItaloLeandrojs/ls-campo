@@ -2,14 +2,15 @@
 import { useEffect, useState } from "react";
 import Lanyard from "./rb/Lanyard.jsx";
 import { frenteDoCracha, cordao } from "./arte.js";
+import Carregando from "../../ui/Carregando.jsx";
 
 export default function Cracha({ equipe }) {
   const [frente, setFrente] = useState(null);
   const [fita] = useState(() => cordao());
   useEffect(() => { let vivo = true; frenteDoCracha(equipe).then((u) => vivo && setFrente(u)); return () => { vivo = false; }; }, [equipe]);
-  if (!frente) return <div className="cracha-palco" aria-hidden="true" />;
+  if (!frente) return <div className="cracha-palco"><Carregando rotulo="Carregando o crachá" tam={56} /></div>;
   return (
-    <div className="cracha-palco" role="img" aria-label={`Crachá da equipe ${equipe.nome}, líder ${equipe.lider}. Dá para puxar com o dedo ou o mouse.`}>
+    <div className="cracha-palco entra-foco" role="img" aria-label={`Crachá da equipe ${equipe.nome}, líder ${equipe.lider}. Dá para puxar com o dedo ou o mouse.`}>
       <Lanyard position={[0, 0, 13]} gravity={[0, -40, 0]} frontImage={frente} lanyardImage={fita} lanyardWidth={1} />
     </div>
   );

@@ -35,8 +35,8 @@
   .l-hero-cel { width: 30%; right: 2%; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .l-sobe { animation: l-sobe 700ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 90ms + 80ms); }
-  @keyframes l-sobe { from { opacity: 0; transform: translateY(14px); } }
+  .l-sobe { animation: l-sobe 700ms var(--ease-out) backwards; animation-delay: calc(var(--i, 0) * 90ms + 80ms); }
+  @keyframes l-sobe { from { opacity: 0; filter: blur(12px); transform: translateY(14px); } } /* de embaçado para nítido */
 }
 
 /* Mini-demo */

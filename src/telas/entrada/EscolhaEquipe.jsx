@@ -6,6 +6,7 @@ import { TIPO } from "../../dominio/tipos.js";
 import { navegar } from "../../app/vt.js";
 import CrachaParado from "../cracha/CrachaParado.jsx";
 import { podeCracha3D } from "../cracha/arte.js";
+import Carregando from "../../ui/Carregando.jsx";
 import "../cracha/cracha.css";
 
 // O 3D (three, física, modelo) só é baixado aqui, depois da escolha.
@@ -21,7 +22,7 @@ function TelaCracha({ equipe, aoEntrar }) {
         <button type="button" className="btn btn-primario btn-grande" onClick={aoEntrar}>Entrar <ArrowRight size={20} /></button>
       </div>
       {tresD ? (
-        <Suspense fallback={<div className="cracha-palco carregando"><CrachaParado equipe={equipe} /></div>}>
+        <Suspense fallback={<div className="cracha-palco"><Carregando rotulo="Carregando o crachá" tam={56} /></div>}>
           <Cracha equipe={equipe} />
         </Suspense>
       ) : <div className="cracha-palco"><CrachaParado equipe={equipe} /></div>}

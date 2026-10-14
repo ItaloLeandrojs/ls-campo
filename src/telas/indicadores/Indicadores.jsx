@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { FileXls, Printer } from "@phosphor-icons/react";
+import { LogoTijolos } from "../../ui/Carregando.jsx";
 import { useMapas, useServicos, useEquipes, useHoje } from "../../dados/seletores.js";
 import { painel } from "../../dominio/indicadores.js";
 import { TIPO, MOTIVO } from "../../dominio/tipos.js";
@@ -66,7 +67,7 @@ export default function Indicadores() {
           {equipes.map((e) => <option key={e.id} value={e.id}>{e.nome}</option>)}
         </select>
         <div className="exportar" role="group" aria-label="Exportar">
-          <button type="button" className="btn btn-secundario" onClick={baixarExcel} disabled={gerando}><FileXls size={18} /> {gerando ? "Gerando..." : "Baixar Excel"}</button>
+          <button type="button" className="btn btn-secundario" onClick={baixarExcel} disabled={gerando}>{gerando ? <><LogoTijolos className="logo-mini" /> Gerando...</> : <><FileXls size={18} /> Baixar Excel</>}</button>
           <button type="button" className="btn btn-secundario" onClick={() => window.print()}><Printer size={18} /> Imprimir ou PDF</button>
         </div>
       </div>

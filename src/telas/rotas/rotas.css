@@ -29,7 +29,8 @@
 .rota-vazia { padding: 16px; border: 1px dashed var(--line-2); border-radius: var(--r-card); }
 
 .mapa-rota { position: relative; height: min(560px, 70vh); min-height: 360px; border-radius: var(--r-card); overflow: hidden; border: 1px solid var(--line); background: var(--surface-2); }
-.mapa-rota .mapa-caixa { position: absolute; inset: 0; } /* mais específico que .maplibregl-map (position: relative) */
+.mapa-rota .mapa-caixa { position: absolute; inset: 0; }
+.mapa-rota .mapa-caixa.esperando { opacity: 0; } /* aparece de embaçado para nítido quando a rota está pronta */ /* mais específico que .maplibregl-map (position: relative) */
 .mapa-aviso { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); font-size: 14px; }
 .mapa-parada {
   display: grid; place-items: center; min-width: 28px; height: 28px; padding: 0 6px; border-radius: var(--r-pill); cursor: pointer;

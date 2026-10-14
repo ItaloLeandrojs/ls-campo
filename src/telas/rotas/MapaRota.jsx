@@ -2,6 +2,7 @@
 // quando o mapa aparece. A lista ao lado é a versão acessível do mesmo conteúdo (por isso os marcadores ficam fora do Tab).
 import { useEffect, useRef, useState } from "react";
 import { tracado } from "../../dominio/rotas.js";
+import Carregando from "../../ui/Carregando.jsx";
 
 const ESTILO = "https://tiles.openfreemap.org/styles/positron";
 const reduz = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -22,6 +23,7 @@ export default function MapaRota({ pontos, selecionado, aoSelecionar }) {
   const marcas = useRef([]);
   const [pronto, setPronto] = useState(false);
   const [falhou, setFalhou] = useState(false);
+  const [visivel, setVisivel] = useState(false); // fundo do mapa carregado: hora de entrar
 
   // Cria o mapa uma vez.
   useEffect(() => {
@@ -46,7 +48,9 @@ export default function MapaRota({ pontos, selecionado, aoSelecionar }) {
           mp.addLayer({ id: "rota-borda", type: "line", source: "rota", paint: { "line-color": "#ffffff", "line-width": 8, "line-opacity": 0.95 }, layout: { "line-cap": "round", "line-join": "round" } });
           mp.addLayer({ id: "rota", type: "line", source: "rota", paint: { "line-color": "#B8462A", "line-width": 4.5 }, layout: { "line-cap": "round", "line-join": "round" } });
           if (vivo) setPronto(true);
+          mp.once("idle", () => vivo && setVisivel(true)); // ruas e rota desenhadas
         });
+        setTimeout(() => vivo && setVisivel(true), 8000); // internet muito lenta: mostra o que tiver
         mp.on("error", () => { if (vivo && !mp.isStyleLoaded()) setFalhou(true); });
         mapa.current = mp;
       } catch { if (vivo) setFalhou(true); }
@@ -94,8 +98,8 @@ export default function MapaRota({ pontos, selecionado, aoSelecionar }) {
 
   return (
     <div className="mapa-rota" role="region" aria-label="Mapa da rota, o mesmo roteiro da lista">
-      <div ref={caixa} className="mapa-caixa" />
-      {!pronto && !falhou && <div className="mapa-aviso">Carregando o mapa...</div>}
+      <div ref={caixa} className={`mapa-caixa${visivel ? " entra-foco" : " esperando"}`} />
+      {!visivel && !falhou && <div className="mapa-aviso"><Carregando rotulo="Carregando o mapa" mostrarTexto /></div>}
       {falhou && <div className="mapa-aviso">Não foi possível carregar o mapa agora. A rota está na lista ao lado.</div>}
     </div>
   );

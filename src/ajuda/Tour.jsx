@@ -68,11 +68,18 @@ export default function Tour() {
     if (passo !== null) return;
     const pedido = new URLSearchParams(local.search).has("tour");
     if (!deveIniciarTour({ rota: local.pathname, visto: lerVisto(), automatizado: navigator.webdriver === true, pedido })) return;
-    const t = setTimeout(() => {
-      if (pedido) navigate("/agenda", { replace: true });
-      setPasso(0);
-    }, 700);
-    return () => clearTimeout(t);
+    let t;
+    const comecar = () => {
+      t = setTimeout(() => {
+        if (pedido) navigate("/agenda", { replace: true });
+        setPasso(0);
+      }, 700);
+    };
+    // espera a abertura com o logo sair, senão o primeiro passo fica escondido atrás dela
+    const html = document.documentElement;
+    if (html.classList.contains("com-abertura") && !html.classList.contains("abertura-fim")) window.addEventListener("ls-campo:abertura-fim", comecar, { once: true });
+    else comecar();
+    return () => { clearTimeout(t); window.removeEventListener("ls-campo:abertura-fim", comecar); };
   }, [local.pathname, local.search, passo, navigate]);
 
   // Pedido pela Ajuda.

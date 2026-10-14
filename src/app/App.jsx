@@ -66,7 +66,7 @@ function LayoutPlanejador() {
         <b>LS Campo</b>
       </div>
       {aberta && <div className="veu" onClick={() => setAberta(false)} />}
-      <aside className={`lateral${aberta ? " aberta" : ""}`} aria-label="Menu do planejador">
+      <aside className={`lateral entra-abertura${aberta ? " aberta" : ""}`} aria-label="Menu do planejador">
         <a className="lateral-marca" href={`${base}`}>
           <img src={`${base}favicon.svg`} alt="" />
           <span><b>LS Campo</b><small>Arremate Serviços Prediais</small></span>
@@ -103,7 +103,7 @@ function LayoutEquipe() {
 
   return (
     <div className="app-equipe" style={{ viewTransitionName: "papel-equipe" }}>
-      <header className="equipe-topo">
+      <header className="equipe-topo entra-abertura">
         <span className="quem"><b>Equipe {eq.nome}</b><small>Líder {eq.lider}</small></span>
         <button type="button" className="btn btn-fantasma btn-icone" aria-label="Ver crachá" onClick={() => navigate(`/equipe/escolher?cracha=${eq.id}`)}><IdentificationBadge size={22} /></button>
         <button type="button" className="btn btn-secundario" onClick={() => navegar(navigate, "/agenda")}>Planejador</button>
@@ -128,8 +128,14 @@ function useVirada() {
   }, []);
 }
 
+/** Avisa a abertura (layouts/Abertura.astro) que o app já montou e ela pode sair. */
+function usePronto() {
+  useEffect(() => { window.__lsCampoPronto = true; window.dispatchEvent(new Event("ls-campo:pronto")); }, []);
+}
+
 export default function App() {
   useVirada();
+  usePronto();
   return (
     <HashRouter>
       <Tema />

@@ -1,0 +1,28 @@
+---
+// Abertura de tela cheia com os tijolos do logo sendo assentados. Aparece uma vez por visita (sessionStorage),
+// na primeira página aberta. ?abertura=1 força (para testar); navegador automatizado não vê, como no tour.
+// O script de fora decide na hora, antes de pintar, para quem já viu não piscar.
+import { TIJOLOS } from "../ui/tijolos.js";
+---
+<div id="abertura" aria-hidden="true">
+  <svg class="logo-tijolos" viewBox="0 0 256 256" focusable="false">
+    <rect class="fundo" width="256" height="256" rx="56" />
+    {TIJOLOS.map(([x, y, w], i) => <rect class={`t t${i}`} x={x} y={y} width={w} height="40" rx="5" />)}
+  </svg>
+</div>
+<script is:inline>
+  (function () {
+    var a = document.getElementById("abertura");
+    var forcar = new URLSearchParams(location.search).has("abertura");
+    var visto = null;
+    try { visto = sessionStorage.getItem("ls-campo:abertura"); } catch (e) {}
+    if (!forcar && (visto || navigator.webdriver)) { a.remove(); return; }
+    try { sessionStorage.setItem("ls-campo:abertura", "1"); } catch (e) {}
+    document.documentElement.classList.add("com-abertura");
+  })();
+</script>
+<script>
+  import { iniciarAbertura, marcarMidias } from "../ui/abertura.js";
+  iniciarAbertura();
+  marcarMidias();
+</script>

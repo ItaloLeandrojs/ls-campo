@@ -1,7 +1,9 @@
 ---
 import "../styles/tokens.css";
+import "../styles/carregando.css";
+import Abertura from "./Abertura.astro";
 import { INDEXAR } from "../config.js";
-const { titulo = "LS Campo", descricao = "Planejamento de equipes de manutenção predial, do pedido ao retorno. Demonstração com dados fictícios.", classe = "" } = Astro.props;
+const { espera = "", titulo = "LS Campo", descricao = "Planejamento de equipes de manutenção predial, do pedido ao retorno. Demonstração com dados fictícios.", classe = "" } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 const imagem = new URL(base + "og.jpg", Astro.site).href; // prévia ao compartilhar (1200 x 630), gerada a partir do print da agenda
@@ -32,7 +34,8 @@ const imagem = new URL(base + "og.jpg", Astro.site).href; // prévia ao comparti
   <meta name="twitter:image" content={imagem}>
   <slot name="head" />
 </head>
-<body class={classe}>
+<body class={classe} data-espera={espera || undefined}>
+  <Abertura />
   <slot />
 </body>
 </html>
