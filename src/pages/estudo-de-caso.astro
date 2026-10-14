@@ -61,7 +61,7 @@ const fases = [
           <h2 id="t-agenda">Tente agendar errado.</h2>
           <p>É a mesma regra que roda no sistema. Arraste a hidráulica para a Aroeira, que só faz pintura e reparos, e veja o que acontece.</p>
         </div>
-        <MiniDemo client:visible linkDemo={app} hojeBuild={hojeISO()} />
+        <MiniDemo client:idle linkDemo={app} hojeBuild={hojeISO()} />
       </div>
     </section>
 
@@ -70,9 +70,9 @@ const fases = [
         <h2 id="t-retorno">Sem checklist, não tem retorno.</h2>
         <p class="c-intro">Na tela da equipe, o botão de enviar só libera com os itens obrigatórios marcados. As fotos de antes e depois vão junto e ficam na ficha do serviço.</p>
         <div class="c-retorno-grade">
-          <RetornoVivo client:visible />
+          <RetornoVivo client:idle />
           <div class="c-retorno-fotos">
-            <AntesDepois client:visible antes={`${base}img/retorno-antes.webp`} depois={`${base}img/retorno-depois.webp`} rotuloAntes="Checklist pendente" rotuloDepois="Pronto para enviar" alt="tela de retorno do serviço no celular" largura={780} altura={1688} />
+            <AntesDepois client:idle antes={`${base}img/retorno-antes.webp`} depois={`${base}img/retorno-depois.webp`} rotuloAntes="Checklist pendente" rotuloDepois="Pronto para enviar" alt="tela de retorno do serviço no celular" largura={780} altura={1688} />
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@ const fases = [
       <div class="l-wrap c-estreito-largo">
         <h2 id="t-prazo">O indicador não é digitado. É calculado.</h2>
         <p class="c-intro">Cada quadrado é um serviço concluído em setembro. Toque para mudar a data de conclusão e veja a porcentagem no prazo recalcular, com a mesma função do painel de Indicadores.</p>
-        <PrazoVivo client:visible />
+        <PrazoVivo client:idle />
       </div>
     </section>
 
