@@ -200,6 +200,13 @@ export const ASSUNTOS = [
     rota: "/agenda", alvoLanding: ".l-como",
   },
   {
+    id: "exportar", titulo: "Exportar os indicadores",
+    termos: ["exportar", "excel", "planilha", "xlsx", "pdf", "imprimir", "impressao", "download", "baixar relatorio", "imprimir painel", "exportar indicadores"],
+    perguntas: ["como exporto os indicadores para o excel", "baixar relatório em pdf", "imprimir o painel"],
+    resposta: "Em Indicadores, \"Baixar Excel\" gera uma planilha com o resumo, uma aba por gráfico e a lista dos serviços concluídos. \"Imprimir ou PDF\" abre a impressão já em A4; escolha \"Salvar como PDF\". Os dois seguem os filtros de período e equipe da tela.",
+    rota: "/indicadores", alvo: ".exportar",
+  },
+  {
     id: "tour", titulo: "Fazer o tour",
     termos: ["tour", "passo a passo", "tutorial", "guia", "apresentacao guiada", "me mostra", "mostrar sistema"],
     perguntas: ["quero fazer o tour", "me mostra o passo a passo do sistema", "tem um tutorial"],

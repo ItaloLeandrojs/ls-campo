@@ -1,18 +1,13 @@
 import { useMemo, useState } from "react";
+import { FileXls, Printer } from "@phosphor-icons/react";
 import { useMapas, useServicos, useEquipes, useHoje } from "../../dados/seletores.js";
-import { concluidos, noPrazo, ocupacao, reagendamentos, porTipo, topClientes, serieMensalPrazo } from "../../dominio/indicadores.js";
+import { painel } from "../../dominio/indicadores.js";
 import { TIPO, MOTIVO } from "../../dominio/tipos.js";
 import { BarrasV, BarrasH, Numero, useChaveAnimacao } from "../../ui/Grafico.jsx";
 import "./indicadores.css";
 
 const NOME_MES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-const pad = (n) => String(n).padStart(2, "0");
 const META = 85;
-
-function mesesAte(hoje, n) {
-  const [a, m] = hoje.split("-").map(Number);
-  return Array.from({ length: n }, (_, i) => { const t = new Date(a, m - 1 - (n - 1 - i), 1); return `${t.getFullYear()}-${pad(t.getMonth() + 1)}`; });
-}
 
 export default function Indicadores() {
   const servicos = useServicos();
@@ -23,22 +18,7 @@ export default function Indicadores() {
   const [equipeId, setEquipeId] = useState("");
   const chave = useChaveAnimacao(periodo, equipeId);
 
-  const ind = useMemo(() => {
-    const meses4 = mesesAte(hoje, 4);
-    const inicio = periodo === "mes" ? `${hoje.slice(0, 7)}-01` : `${meses4[0]}-01`;
-    const opts = { inicio, fim: hoje, equipeId: equipeId || undefined, equipes, hoje };
-    const serie = serieMensalPrazo(servicos, meses4, equipeId || undefined);
-    return {
-      concl: concluidos(servicos, opts),
-      prazo: noPrazo(servicos, opts),
-      ocup: ocupacao(servicos, opts),
-      ocupTodas: ocupacao(servicos, { ...opts, equipeId: undefined }),
-      reag: reagendamentos(servicos, opts),
-      tipos: porTipo(servicos, opts),
-      top: topClientes(servicos, opts, 5),
-      serie,
-    };
-  }, [servicos, equipes, hoje, periodo, equipeId]);
+  const ind = useMemo(() => painel(servicos, { hoje, periodo, equipeId, equipes }), [servicos, equipes, hoje, periodo, equipeId]);
 
   const s = ind.serie;
   const cheios = s.slice(0, 3).filter((x) => x.pct !== null);
@@ -52,6 +32,23 @@ export default function Indicadores() {
   const motivoTop = ind.reag.porMotivo[0];
   const tipoTop = ind.tipos[0];
   const rotPeriodo = periodo === "mes" ? "neste mês" : "nos últimos 3 meses";
+  const [gerando, setGerando] = useState(false);
+  const dataBR = (iso) => iso.split("-").reverse().join("/");
+  const agoraLocal = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 19); };
+  const filtrosTexto = `${periodo === "mes" ? "Mês atual" : "Últimos 3 meses"} (${dataBR(ind.inicio)} a ${dataBR(hoje)}), ${equipeId ? `equipe ${mapaEq[equipeId].nome}` : "todas as equipes"}`;
+
+  // Excel: o gerador só é baixado no clique.
+  async function baixarExcel() {
+    setGerando(true);
+    try {
+      const [{ montarRelatorio }, { gerarXlsx }] = await Promise.all([import("../../dominio/relatorio.js"), import("../../dados/xlsx.js")]);
+      const rel = montarRelatorio({ servicos, equipes, clientes, hoje, periodo, equipeId, geradoEm: agoraLocal() });
+      const url = URL.createObjectURL(new Blob([gerarXlsx(rel.abas)], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+      const a = Object.assign(document.createElement("a"), { href: url, download: `ls-campo-indicadores-${hoje}.xlsx` });
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } finally { setGerando(false); }
+  }
 
   return (
     <div className="indicadores">
@@ -68,7 +65,12 @@ export default function Indicadores() {
           <option value="">Todas as equipes</option>
           {equipes.map((e) => <option key={e.id} value={e.id}>{e.nome}</option>)}
         </select>
+        <div className="exportar" role="group" aria-label="Exportar">
+          <button type="button" className="btn btn-secundario" onClick={baixarExcel} disabled={gerando}><FileXls size={18} /> {gerando ? "Gerando..." : "Baixar Excel"}</button>
+          <button type="button" className="btn btn-secundario" onClick={() => window.print()}><Printer size={18} /> Imprimir ou PDF</button>
+        </div>
       </div>
+      <p className="so-impressao impressao-filtros">{filtrosTexto}. Gerado em {dataBR(hoje)}, pelo LS Campo (dados fictícios).</p>
 
       <div className="kpis">
         <div className="kpi cartao"><span>Concluídos {rotPeriodo}</span><b><Numero valor={ind.concl} /></b></div>

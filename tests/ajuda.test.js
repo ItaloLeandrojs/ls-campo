@@ -54,6 +54,9 @@ describe("responder", () => {
     ["onde está o código", "codigo"],
     ["ver o crachá da equipe", "cracha"],
     ["quero fazer o tour", "tour"],
+    ["como exporto os indicadores para o excel", "exportar"],
+    ["baixar relatório em pdf", "exportar"],
+    ["imprimir o painel", "exportar"],
     ["me mostra o passo a passo do sistema", "tour"],
   ])("%s → %s", (pergunta, id) => {
     expect(achou(pergunta)).toBe(id);

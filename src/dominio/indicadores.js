@@ -19,7 +19,7 @@ export function reservas(servico) {
   return lista;
 }
 
-function concluidosNo(servicos, { inicio, fim, equipeId }) {
+export function concluidosNo(servicos, { inicio, fim, equipeId }) {
   return servicos.filter((s) => s.etapa === "concluido"
     && dentro(dataDe(s.retorno?.concluidoEm), inicio, fim)
     && (!equipeId || s.agendamento?.equipeId === equipeId));
@@ -100,4 +100,36 @@ export function serieMensalPrazo(servicos, meses, equipeId) {
     const r = noPrazo(servicos, { inicio: `${mes}-01`, fim: fimDoMes(mes), equipeId });
     return { mes, pct: r.pct, total: r.total };
   });
+}
+
+const pad2 = (n) => String(n).padStart(2, "0");
+
+/** Os últimos n meses até o de 'hoje', no formato 'AAAA-MM' (o último é o mês atual). */
+export function mesesAte(hoje, n) {
+  const [a, m] = hoje.split("-").map(Number);
+  return Array.from({ length: n }, (_, i) => { const t = new Date(a, m - 1 - (n - 1 - i), 1); return `${t.getFullYear()}-${pad2(t.getMonth() + 1)}`; });
+}
+
+/**
+ * Tudo o que o painel de Indicadores mostra, num cálculo só (a tela e a exportação usam este).
+ * periodo: "mes" (mês atual) ou "3m" (do início de 3 meses atrás até hoje). equipeId vazio = todas.
+ */
+export function painel(servicos, { hoje, periodo, equipeId, equipes }) {
+  const meses4 = mesesAte(hoje, 4);
+  const inicio = periodo === "mes" ? `${hoje.slice(0, 7)}-01` : `${meses4[0]}-01`;
+  const eq = equipeId || undefined;
+  const opts = { inicio, fim: hoje, equipeId: eq, equipes, hoje };
+  return {
+    inicio,
+    fim: hoje,
+    concl: concluidos(servicos, opts),
+    prazo: noPrazo(servicos, opts),
+    ocup: ocupacao(servicos, opts),
+    ocupTodas: ocupacao(servicos, { ...opts, equipeId: undefined }),
+    reag: reagendamentos(servicos, opts),
+    tipos: porTipo(servicos, opts),
+    top: topClientes(servicos, opts, 5),
+    serie: serieMensalPrazo(servicos, meses4, eq),
+    concluidosLista: concluidosNo(servicos, opts),
+  };
 }

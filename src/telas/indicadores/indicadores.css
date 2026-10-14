@@ -1,5 +1,8 @@
 /* Indicadores */
 .filtros-ind { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.exportar { display: flex; gap: 8px; margin-left: auto; }
+@media (max-width: 640px) { .exportar { margin-left: 0; width: 100%; } .exportar .btn { flex: 1; justify-content: center; } }
+.so-impressao { display: none; }
 .filtros-ind select { min-height: 40px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); padding: 0 10px; }
 .seg { display: inline-flex; padding: 3px; border-radius: var(--r-pill); background: var(--surface-2); }
 .seg button { min-height: 34px; padding: 0 14px; border: 0; border-radius: var(--r-pill); background: none; color: var(--muted); font-weight: 600; cursor: pointer; transition: background-color 160ms ease, color 160ms ease; }
@@ -51,3 +54,23 @@
 }
 @media (prefers-reduced-motion: reduce) { .graf-v-barra, .graf-h-barra { transition: none; } }
 @media (max-width: 640px) { .graf-h-lista li { grid-template-columns: 104px 1fr 48px; } .graf-v-area { gap: 8px; } }
+
+/* Impressão e "Salvar como PDF": o painel cabe em A4, sem menu, filtros nem botões; os filtros viram uma linha de texto. */
+@media print {
+  @page { size: A4 portrait; margin: 12mm; }
+  .indicadores .topo-tela p, .filtros-ind { display: none !important; }
+  .so-impressao { display: block; margin: 0 0 10px; font-size: 11pt; color: #3f3f46; }
+  .indicadores .topo-tela h1::before { content: "LS Campo · "; }
+  .kpis { grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+  .kpi { padding: 8px 10px; }
+  .kpi b { font-size: 20pt; }
+  .paineis { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .painel-duplo { grid-template-columns: 1.4fr 1fr; }
+  .painel { padding: 10px 12px; break-inside: avoid; }
+  .painel h2 { font-size: 11.5pt; }
+  .painel-sub { margin-bottom: 8px; font-size: 9pt; }
+  .graf-v-area { height: 170px; }
+  .graf-dica { display: none !important; }
+  .graf-v-barra, .graf-h-barra, .graf-h-lista i, .graf-h-lista span { transition: none !important; animation: none !important; }
+  .cartao { box-shadow: none !important; border: 1px solid #d4d4d8 !important; }
+}
